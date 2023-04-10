@@ -1,0 +1,3 @@
+# Python bytecode temporary files
+__pycache__
+*.pyc
