@@ -1,5 +1,3 @@
-import requests
-
 class token_auth:
     def __init__(self, base_url, session, token):
         self.base_url = base_url
@@ -15,7 +13,5 @@ class token_auth:
         payload = {
             'authToken': self.token,
         }
-        response = self.session.post(url, headers=headers,data=payload)
-
-
-        print(self.session.cookies.get_dict())
+        self.session.post(url, headers=headers,data=payload)
+        # print(self.session.cookies.get_dict())
