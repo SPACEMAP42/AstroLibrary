@@ -1,3 +1,7 @@
 # Python bytecode temporary files
 __pycache__
 *.pyc
+dist
+.whl
+.gz
+build.sh
