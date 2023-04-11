@@ -1,6 +1,12 @@
 # AstroLibrary
 <center><img src="./logo_spacemap.png"></center>  
 
+### Install poetry
+`poetry` must be installed before building the package.
+```terminal
+pip install poetry
+```
+
 ### How to build package and use AstroLibrary
 You can use poetry to make it a distributable file.
 ```terminal
