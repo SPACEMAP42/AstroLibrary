@@ -1,11 +1,12 @@
 import os
 import requests
 import configparser
-from astrolibrary.functions.conjunction.api import conjunction
-from astrolibrary.functions.token_auth.api import token_auth
+from astrolibrary.functions.conjunction.api import ConjunctionAPI
+from astrolibrary.functions.token_auth.api import TokenAuthAPI
+from astrolibrary.functions.tle.api import TLEAPI
 
 
-class client:
+class Client:
     def __init__(self, token):
         __config = configparser.ConfigParser()
         config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
@@ -13,14 +14,6 @@ class client:
         self.__base_url = __config.get("SPACEMAP", "BASE_URL")
         self.__token = token
         self.__session = requests.Session()
-        self.token_auth = token_auth(self.__base_url, self.__session, self.__token)
-        self.conjunction = conjunction(self.__base_url, self.__session)
-
-
-# for testing astrolib using local environment !!
-# if __name__ == "__main__":
-#     spacemap = client(
-#         "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
-#     )
-#     spacemap.token_auth.create_session()
-#     print(spacemap.conjunction.get_conjunctions())
+        self.token_auth_API = TokenAuthAPI(self.__base_url, self.__session, self.__token)
+        self.conjunction_API = ConjunctionAPI(self.__base_url, self.__session)
+        self.tle_API = TLEAPI(self.__base_url, self.__session)

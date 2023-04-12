@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class conjunction:
+class ConjunctionAPI:
     def __init__(self, base_url, session):
         self.__base_url = base_url
         self.__session = session
