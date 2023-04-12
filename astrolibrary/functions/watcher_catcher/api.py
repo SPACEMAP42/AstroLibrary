@@ -1,6 +1,7 @@
 import datetime
 
-class watcher_catcher:
+
+class WatcherCatcherAPI:
     def __init__(self, base_url, session):
         self.__base_url = base_url
         self.__session = session
@@ -34,8 +35,6 @@ class watcher_catcher:
         }
         response = self.__session.post(url, data=payload)
         return response.json()
-    
-    def get_watcher_catcher(
-        self
-    ):
+
+    def get_watcher_catcher(self):
         pass
