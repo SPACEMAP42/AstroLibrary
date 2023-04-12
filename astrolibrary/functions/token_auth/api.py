@@ -1,4 +1,4 @@
-class token_auth:
+class TokenAuthAPI:
     def __init__(self, base_url, session, token):
         self.__base_url = base_url
         self.__session = session
