@@ -24,4 +24,4 @@ if __name__ == "__main__":
         "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
     )
     spacemap.token_auth.create_session()
-    print(spacemap.watcher_catcher.post_watcher_catcher(37.5326, 127.024612, 45, 40))
+    print(spacemap.watcher_catcher.post_watcher_catcher())
