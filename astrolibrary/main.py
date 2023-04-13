@@ -1,9 +1,10 @@
 import os
 import requests
 import configparser
-from astrolibrary.functions.conjunction.api import ConjunctionAPI
-from astrolibrary.functions.token_auth.api import TokenAuthAPI
-from astrolibrary.functions.tle.api import TLEAPI
+from .functions.conjunction.api import ConjunctionAPI
+from .functions.token_auth.api import TokenAuthAPI
+from .functions.tle.api import TLEAPI
+from .functions.watcher_catcher.api import WatcherCatcherAPI
 
 
 class Client:
@@ -21,3 +22,4 @@ class Client:
         )
         self.conjunction_API = ConjunctionAPI(self.__base_url, self.__session)
         self.tle_API = TLEAPI(self.__base_url, self.__session)
+        self.watcher_catcher_API = WatcherCatcherAPI(self.__base_url, self.__session)

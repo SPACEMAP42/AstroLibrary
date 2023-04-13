@@ -8,10 +8,4 @@ from .functions.tle.api import TLEAPI
 from .graphic.visualizationtool import VisualizationTool
 
 
-__all__ = [
-    "Client", 
-    "ConjunctionAPI", 
-    "TokenAuthAPI", 
-    "WatcherCatcherAPI", 
-    "TLEAPI"
-]
+__all__ = ["Client", "ConjunctionAPI", "TokenAuthAPI", "WatcherCatcherAPI", "TLEAPI"]
