@@ -17,7 +17,7 @@ class TLEAPI:
         for key in keys_to_delete:
             del params[key]
         response = self.__session.get(url, params=params)
-        return self.tles_dict_to_tles_object(response.json()["data"]["tles"])
+        return self.__tle_dict_to_tle_objects(response.json()["data"]["tles"])
 
     def get_tle_by_norad_id_and_date(
         self, norad_id, date: datetime = datetime.now()
@@ -30,11 +30,11 @@ class TLEAPI:
         url = self.__base_url + endpoint
         params = {"id": norad_id}
         response = self.__session.get(url, params=params)
-        return self.tles_dict_to_tles_object(response.json()["data"]["tles"])
+        return self.__tle_dict_to_tle_objects(response.json()["data"]["tles"])
 
-    def tles_dict_to_tles_object(self, tles_dict) -> List[TLE]:
+    def __tle_dict_to_tle_objects(self, tle_dict) -> List[TLE]:
         tles: List[TLE] = list()
-        for tle_dict in tles_dict:
-            tle = TLE(tle_dict)
+        for curr_tle_dict in tle_dict:
+            tle = TLE(curr_tle_dict)
             tles.append(tle)
         return tles

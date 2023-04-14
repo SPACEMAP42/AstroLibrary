@@ -7,6 +7,9 @@ authors = ["spacemap Developers"]
 maintainers = ["spacemap <contact@spacemap42.com>"]
 readme = "README.md"
 include = ["astrolibrary/config.ini"]
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.22.0"
+
 
 [build-system]
 requires = ["poetry-core"]

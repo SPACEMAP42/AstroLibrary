@@ -2,6 +2,7 @@ import time
 import datetime
 from typing import List
 from astrolibrary.data.watcher_catcher import WatcherCatcher
+from astrolibrary.data.wcdb import WCDB
 
 
 class WatcherCatcherAPI:
@@ -10,13 +11,13 @@ class WatcherCatcherAPI:
         self.__session = session
 
     def __get_current_time(self):
-        return datetime.datetime.now()
+        return datetime.datetime.utcnow()
 
     def predict_watcher_catcher(
         self,
         latitude: float = 37.5326,
         longitude: float = 127.024612,
-        altitude: float = 45,
+        altitude: float = 2000,
         field_of_view: float = 40,
         wc_epoch_time: str = None,
         wc_end_time: str = None,
@@ -45,7 +46,7 @@ class WatcherCatcherAPI:
         response = self.__session.get(url)
         return response.json()
 
-    def get_predicted_result(self, id) -> List[WatcherCatcher]:
+    def get_predicted_result(self, id) -> WatcherCatcher:
         endpoint = f"/watcher-catcher/{id}"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
@@ -60,29 +61,27 @@ class WatcherCatcherAPI:
         url = self.__base_url + endpoint
         response = self.__session.delete(url)
         return response.json()
-    
+
     # def delete_entire_predicted_results(self) -> None:
     #     results = self.get_requests_status_list()['data']
     #     for result in results:
     #         id = result['_id']
     #         self.delete_predicted_result(id)
 
-    def __response_to_watcher_catcher_object(self, response) -> List[WatcherCatcher]:
-        results: List[WatcherCatcher] = list()
-        if isinstance(response, list):
-            for obj in response:
-                result = WatcherCatcher(obj)
-                results.append(result)
-        elif isinstance(response, dict):
-            result = WatcherCatcher(response)
-            results.append(response)
-        return results
+    def __response_to_watcher_catcher_object(self, response) -> WatcherCatcher:
+        object_list: List[WCDB] = list() 
+        for object in response['wcdb']:
+            object = WCDB(object)
+            object_list.append(object)
+        response['wcdb'] = object_list
+        return WatcherCatcher(response)
+
 
     def predict_watcher_catcher_and_get_result(
         self,
         latitude: float = 37.5326,
         longitude: float = 127.024612,
-        altitude: float = 45,
+        altitude: float = 2000,
         field_of_view: float = 40,
         wc_epoch_time: str = None,
         wc_end_time: str = None,
@@ -91,5 +90,4 @@ class WatcherCatcherAPI:
             latitude, longitude, altitude, field_of_view, wc_epoch_time, wc_end_time
         )
         id = self.get_requests_status_list()["data"][-1]["_id"]
-        result = self.get_predicted_result(id)
-        return result
+        return self.get_predicted_result(id)
