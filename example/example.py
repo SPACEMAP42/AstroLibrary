@@ -4,7 +4,7 @@ if __name__ == "__main__":
     
     # Create Astro Library Cilent
     ROK_airforce = astrolibrary.Client(
-        "FLKHTmD7kQvowF+FYvIYtegO834kVdzgbAQxA2+YIe1ngSLkDNY6kWQnAog2z6s8"
+        "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
     )
     
     # Token Auth API
