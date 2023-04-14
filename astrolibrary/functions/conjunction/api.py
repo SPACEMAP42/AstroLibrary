@@ -1,4 +1,6 @@
 from enum import Enum
+from typing import List
+from astrolibrary.data.conjunction import Conjunction
 
 
 class ConjunctionAPI:
@@ -17,4 +19,12 @@ class ConjunctionAPI:
         url = self.__base_url + endpoint
         params = {"limit": limit, "page": page, "sort": sort.name}
         response = self.__session.get(url, params=params)
-        return response.json()["data"]
+        return self.__dict_to_conjunction_object(response.json()["data"])
+
+    def __dict_to_conjunction_object(self, response):
+        conjunction_list: List[Conjunction] = list()
+        for conjunction in response["conjunctions"]:
+            conjunction = Conjunction(conjunction)
+            conjunction_list.append(conjunction)
+        response["conjunctions"] = conjunction_list
+        return response
