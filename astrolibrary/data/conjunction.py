@@ -1,6 +1,3 @@
-import json
-
-
 class Conjunction:
     def __init__(self, conjunction):
         self.__created_at = conjunction["createdAt"]
@@ -16,22 +13,48 @@ class Conjunction:
         self.__probability = conjunction["probability"]
 
     @property
+    def created_at(self):
+        return self.__created_at
+
+    @property
     def p_id(self):
         return self.__p_id
 
-    # def __repr__(self):
-    #     return f"\n\
-    #         created_at: {self.__created_at}\n\
-    #         p_id: {self.__p_id}\n\
-    #         p_name: {self.__p_name}\n\
-    #         s_id: {self.__s_id}\n\
-    #         s_name: {self.__s_name}\n\
-    #         dca: {self.__dca}\n\
-    #         tca_time: {self.__tca_time}\n\
-    #         tca_start_time: {self.__tca_start_time}\n\
-    #         tca_end_time: {self.__tca_end_time}\n\
-    #         standard_time: {self.__standard_time}\n\
-    #         probability: {self.__probability}"
+    @property
+    def p_name(self):
+        return self.__p_name
+
+    @property
+    def s_id(self):
+        return self.__s_id
+
+    @property
+    def s_name(self):
+        return self.__s_name
+
+    @property
+    def dca(self):
+        return self.__dca
+
+    @property
+    def tca_time(self):
+        return self.__tca_time
+
+    @property
+    def tca_start_time(self):
+        return self.__tca_start_time
+
+    @property
+    def tca_end_time(self):
+        return self.__tca_end_time
+
+    @property
+    def standard_time(self):
+        return self.__standard_time
+
+    @property
+    def probability(self):
+        return self.__probability
 
     def __repr__(self):
         data = {
@@ -47,4 +70,4 @@ class Conjunction:
             "standard_time": self.__standard_time,
             "probability": self.__probability,
         }
-        return json.dumps(data, indent=4)
+        return data
