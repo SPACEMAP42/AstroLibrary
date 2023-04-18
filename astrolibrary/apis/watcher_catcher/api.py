@@ -69,13 +69,12 @@ class WatcherCatcherAPI:
     #         self.delete_predicted_result(id)
 
     def __response_to_watcher_catcher_object(self, response) -> WatcherCatcher:
-        object_list: List[WCDB] = list() 
-        for object in response['wcdb']:
+        object_list: List[WCDB] = list()
+        for object in response["wcdb"]:
             object = WCDB(object)
             object_list.append(object)
-        response['wcdb'] = object_list
+        response["wcdb"] = object_list
         return WatcherCatcher(response)
-
 
     def predict_watcher_catcher_and_get_result(
         self,
