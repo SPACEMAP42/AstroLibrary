@@ -1,11 +1,18 @@
-__version__ = "0.1.0"
+from .main import Client
+from .apis.conjunction.api import ConjunctionAPI
+from .apis.token_auth.api import TokenAuthAPI
+from .apis.watcher_catcher.api import WatcherCatcherAPI
+from .apis.tle.api import TLEAPI
+from .data.watcher_catcher import WatcherCatcher
+from .data.tle import TLE
 
-from .main import client
-from .functions.conjunction.api import conjunction
-from .functions.token_auth.api import token_auth
 
 __all__ = [
-    "client",
-    "conjunction",
-    "token_auth",
+    "Client",
+    "ConjunctionAPI",
+    "TokenAuthAPI",
+    "WatcherCatcherAPI",
+    "TLEAPI",
+    "WatcherCatcher",
+    "TLE",
 ]
