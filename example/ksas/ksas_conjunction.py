@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     # An error occurs because conjunction result is not a dictionary type
     # print(result['conjunctions'][0]['p_id'])    # error code
-    print(result.conjunctions[0].p_id)  # success code
+    print(result.conjunctions[0].primary_id)  # success code
 
     # How to call an API with differenet parameters
     result2 = ROK_airforce.conjunction_API.get_conjunctions(
@@ -92,6 +92,11 @@ if __name__ == "__main__":
 
     # How to search for a specific space object you want
     result3 = ROK_airforce.conjunction_API.get_conjunctions(
-        limit=10, sort="tcaTime", satellite="starlink"
+        limit=10, sort="tcaTime", norad_id_or_name="starlink"
     )
     print(result3)
+
+    # API to find a conjunction between a specific satellite and satellite constellation
+    result4 = ROK_airforce.conjunction_API.get_target_conjunctions(
+        target_norad_id=39227, constellation=Constellation.STARLINK
+    )

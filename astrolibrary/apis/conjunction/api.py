@@ -19,7 +19,25 @@ class ConjunctionAPI:
         limit: int = 2,
         page: int = 0,
         sort: sort_type = sort_type.tcaTime,
-        target_satellite: str = None,
+        norad_id_or_name: str = None,
+    ):
+        endpoint = "/ppdb/conjunctions"
+        url = self.__base_url + endpoint
+        params = {
+            "limit": limit,
+            "page": page,
+            "sort": self.sort_type(sort).name,
+            "satellite": norad_id_or_name,
+        }
+        response = self.__session.get(url, params=params)
+        return self.__dict_to_conjunction_object(response.json()["data"])
+
+    def get_target_conjunctions(
+        self,
+        limit: int = 2,
+        page: int = 0,
+        sort: sort_type = sort_type.tcaTime,
+        target_norad_id: str = None,
         constellation: Constellation = None,
     ):
         endpoint = "/ppdb/conjunctions"
@@ -30,22 +48,20 @@ class ConjunctionAPI:
             "limit": limit,
             "page": page,
             "sort": self.sort_type(sort).name,
-            "satellite": target_satellite,
+            "satellite": target_norad_id,
         }
         response = self.__session.get(url, params=params)
 
         result = self.__dict_to_conjunction_object(response.json()["data"])
-        if target_satellite != None and constellation != None:
+        if target_norad_id != None and constellation != None:
             conjunctions: List[Conjunction] = list()
             for conjunction in result.conjunctions:
-                # print(constellation, conjunction.s_id, conjunction.s_name)
-                if Constellation(constellation).name in conjunction.s_name:
+                if Constellation(constellation).name in conjunction.secondary_name:
                     conjunctions.append(conjunction)
             result.conjunctions = conjunctions
             result.total_count = len(conjunctions)
             result.current_count = len(conjunctions)
         return result
-        
 
     def __dict_to_conjunction_object(self, response) -> ConjunctionList:
         conjunction_list: List[Conjunction] = list()
