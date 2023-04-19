@@ -22,20 +22,20 @@ if __name__ == "__main__":
     
     Parameters
     ----------
-        apex_latitude: latitude of the point to observe the space objects
-            default value: 37.5326
+        apex_latitude: latitude of the apex to observe the space objects
+            default value: 37.5326 (deg)
 
-        apex_longitude: longitude of the point to observe the space objects
-            default value: 127.024612
+        apex_longitude: longitude of the apex to observe the space objects
+            default value: 127.024612 (deg)
 
-        cone_range: Altitude to observe space objects from the ground
-            default value: 2000
+        cone_range: range to observe space objects from the ground
+            default value: 2000 (km)
 
-        cone_field_of_view: the angle from the vertex to its wall, indicating the visual range
-            default value: 40
+        cone_field_of_view: the extent of the observable world that is seen at any given moment, indicating the visual range
+            default value: 40 (deg)
 
         start_time_of_timeline: time to start exploring the space objects
-            default value: current time
+            default value: current timexw
 
         end_time_of_timeline: time to end object search
             default value: 1 hour from current time
@@ -51,23 +51,23 @@ if __name__ == "__main__":
         "cone_field_of_view": 40,
         "start_time_of_timeline": "2023-04-17T08:58:58.170Z",
         "end_time_of_timeline": "2023-04-17T09:58:58.170Z",
-        "prediction_epoch_time": "2023-04-16T09:00:00.000Z",
+        "downloaded_time_of_used_TLE": "2023-04-16T09:00:00.000Z",
         "watching_time_interval": [
             {
                 "primary_id": 0,
-                "primary_name": "Site",
-                "secondary_id": 7061,
-                "secondary_name": "DELTA 1 DEB",
-                "start_time_of_time_interval": "2023-04-17T08:59:03.000Z",
-                "end_time_of_time_interval": "2023-04-17T08:59:22.000Z"
+                "primary_name": "Apex",
+                "secondary_id": 55999,
+                "secondary_name": "STARLINK-5901",
+                "start_time_of_time_interval": "2023-04-19T08:10:59.000Z",
+                "end_time_of_time_interval": "2023-04-19T08:11:09.000Z"
             },
             {
                 "primary_id": 0,
-                "primary_name": "Site",
-                "secondary_id": 8179,
-                "secondary_name": "THORAD DELTA 1 DEB",
-                "start_time_of_time_interval": "2023-04-17T08:59:03.000Z",
-                "end_time_of_time_interval": "2023-04-17T08:59:57.000Z"
+                "primary_name": "Apex",
+                "secondary_id": 87235,
+                "secondary_name": "TBA - TO BE ASSIGNED",
+                "start_time_of_time_interval": "2023-04-19T08:10:49.000Z",
+                "end_time_of_time_interval": "2023-04-19T08:11:09.000Z"
             }
         ]
     }
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # send request to watcher catcher server
     response = ROK_airforce.watcher_catcher_API.predict_watcher_catcher()
 
-    # 2. list of statuses of requests sent to the watcher catcher server
+    # # 2. list of statuses of requests sent to the watcher catcher server
     request_list = ROK_airforce.watcher_catcher_API.get_requests_status_list()["data"]
     print(request_list)
 
@@ -90,5 +90,5 @@ if __name__ == "__main__":
     # API to clear the id of a specific database from the list
     ROK_airforce.watcher_catcher_API.delete_predicted_result(id)
 
-    # A function that performs steps 1-3 above at once
+    # # A function that performs steps 1-3 above at once
     print(ROK_airforce.watcher_catcher_API.predict_watcher_catcher_and_get_result())
