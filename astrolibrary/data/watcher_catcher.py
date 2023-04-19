@@ -11,7 +11,7 @@ class WatcherCatcher:
         self.__start_time_of_timeline = response["wcEpochTime"]
         self.__end_time_of_timeline = response["wcEndTime"]
         self.__prediction_epoch_time = response["predictionEpochTime"]
-        self.__wcdb = response["wcdb"]
+        self.__watching_time_interval = response["wcdb"]
 
     @property
     def id(self):
@@ -46,8 +46,8 @@ class WatcherCatcher:
         return self.__prediction_epoch_time
 
     @property
-    def wcdb(self):
-        return self.__wcdb
+    def watching_time_interval(self):
+        return self.__watching_time_interval
 
     def __repr__(self) -> str:
         data = {
@@ -59,6 +59,9 @@ class WatcherCatcher:
             "start_time_of_timeline": self.__start_time_of_timeline,
             "end_time_of_timeline": self.__end_time_of_timeline,
             "prediction_epoch_time": self.__prediction_epoch_time,
-            "wcdb": [wcdb.__repr__() for wcdb in self.__wcdb],
+            "watching_time_interval": [
+                watching_time_interval.__repr__()
+                for watching_time_interval in self.__watching_time_interval
+            ],
         }
         return json.dumps(data, indent=4)

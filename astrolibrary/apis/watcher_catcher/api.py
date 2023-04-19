@@ -2,7 +2,7 @@ import time
 import datetime
 from typing import List
 from astrolibrary.data.watcher_catcher import WatcherCatcher
-from astrolibrary.data.wcdb import WatchingTimeInterval
+from astrolibrary.data.watching_time_interval import WatchingTimeInterval
 
 
 class WatcherCatcherAPI:

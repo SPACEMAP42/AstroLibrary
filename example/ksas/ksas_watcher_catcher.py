@@ -41,7 +41,7 @@ if __name__ == "__main__":
             default value: 1 hour from current time
 
             
-    Example result (show only 2 wcdb examples)
+    Example result (show only 2 watching_time_interval examples)
     ------------------------------------------
     {
         "id": "643d0a524623d86432a04ce4",
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         "wc_epoch_time": "2023-04-17T08:58:58.170Z",
         "wc_end_time": "2023-04-17T09:58:58.170Z",
         "prediction_epoch_time": "2023-04-16T09:00:00.000Z",
-        "wcdb": [
+        "watching_time_interval": [
             {
                 "place_id": "643d0a524623d86432a04ce4",
                 "p_id": 0,
