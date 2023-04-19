@@ -14,7 +14,7 @@ class ConjunctionAPI:
         tcaTime = "tcaTime"
         dca = "dca"
 
-    def get_conjunctions(
+    def search_conjunctions(
         self,
         limit: int = 2,
         page: int = 0,
@@ -32,7 +32,7 @@ class ConjunctionAPI:
         response = self.__session.get(url, params=params)
         return self.__dict_to_conjunction_object(response.json()["data"])
 
-    def get_conjunctions_by_target_object(
+    def search_conjunctions_by_target_object(
         self,
         limit: int = 2,
         page: int = 0,
