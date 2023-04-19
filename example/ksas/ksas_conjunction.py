@@ -8,15 +8,18 @@
 
 import astrolibrary
 
-example_access_token = "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
+example_access_token = (
+    "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
+)
 
 if __name__ == "__main__":
-    # Create an astrolibrary client named ROK_airforce
+    # create an astrolibrary client named ROK_airforce
     ROK_airforce = astrolibrary.Client(example_access_token)
 
     """
     get conjunction api basically uses pagination technique.
 
+    
     Parameters
     ----------
         limit (required): limit the number of conjunctions shown on the page
@@ -32,33 +35,41 @@ if __name__ == "__main__":
         satellite (not required): search for conjunctions using NORAD ID or TLE objects names
             example value: 39227 (NORAD ID), KOMSAT 5 (object name)
 
+            
     Example result
     --------------
-    {'totalCount': 244653, 'currentCount': 2, 'conjunctions': [{
-        "created_at": "2023-04-17T12:00:00.000Z",
-        "p_id": 31003,
-        "p_name": "FENGYUN 1C DEB",
-        "s_id": 31661,
-        "s_name": "FENGYUN 1C DEB",
-        "dca": 9.373,
-        "tca_time": "2023-04-16T09:00:00.000Z",
-        "tca_start_time": "2023-04-16T09:00:00.000Z",
-        "tca_end_time": "2023-04-16T09:00:28.514Z",
-        "standard_time": "2023-04-16T09:00:00.000Z",
-        "probability": "0.000e+00"
-    }, {
-        "created_at": "2023-04-17T12:00:00.000Z",
-        "p_id": 49044,
-        "p_name": "ISS (NAUKA)",
-        "s_id": 55860,
-        "s_name": "DRAGON CRS-27",
-        "dca": 6.323,
-        "tca_time": "2023-04-16T09:00:00.000Z",
-        "tca_start_time": "2023-04-16T09:00:00.000Z",
-        "tca_end_time": "2023-04-17T08:23:30.000Z",
-        "standard_time": "2023-04-16T09:00:00.000Z",
-        "probability": "1.091e-12"
-    }]}
+    {
+        "total_count": 226491,
+        "current_count": 2,
+        "conjunctions": [
+            {
+                "created_at": "2023-04-18T12:00:00.000Z",
+                "p_id": 55668,
+                "p_name": "STARLINK-5455",
+                "s_id": 55670,
+                "s_name": "STARLINK-5423",
+                "dca": 2.429,
+                "tca_time": "2023-04-17T09:00:00.000Z",
+                "tca_start_time": "2023-04-17T09:00:00.000Z",
+                "tca_end_time": "2023-04-17T09:25:30.000Z",
+                "standard_time": "2023-04-17T09:00:00.000Z",
+                "probability": "4.276e-13"
+            },
+            {
+                "created_at": "2023-04-18T12:00:00.000Z",
+                "p_id": 31272,
+                "p_name": "FENGYUN 1C DEB",
+                "s_id": 54262,
+                "s_name": "CZ-6A DEB",
+                "dca": 8.298,
+                "tca_time": "2023-04-17T09:00:01.465Z",
+                "tca_start_time": "2023-04-17T09:00:00.000Z",
+                "tca_end_time": "2023-04-17T09:00:03.055Z",
+                "standard_time": "2023-04-17T09:00:01.465Z",
+                "probability": "0.000e+00"
+            }
+        ]
+    }
     """
 
     # call api with default parameters
@@ -66,16 +77,20 @@ if __name__ == "__main__":
     print(result)
 
     # <class 'astrolibrary.data.conjunction.Conjunction'>
-    print(type(result['conjunctions'][0]))
-    
+    print(type(result.conjunctions[0]))
+
     # An error occurs because conjunction result is not a dictionary type
     # print(result['conjunctions'][0]['p_id'])    # error code
-    print(result['conjunctions'][0].p_id)       # success code
+    print(result.conjunctions[0].p_id)  # success code
 
     # How to call an API with differenet parameters
-    result2 = ROK_airforce.conjunction_API.get_conjunctions(limit=5, page=10, sort="dca")
+    result2 = ROK_airforce.conjunction_API.get_conjunctions(
+        limit=5, page=10, sort="dca"
+    )
     print(result2)
 
     # How to search for a specific space object you want
-    result3 = ROK_airforce.conjunction_API.get_conjunctions(limit=10, sort="tcaTime", satellite="starlink")
+    result3 = ROK_airforce.conjunction_API.get_conjunctions(
+        limit=10, sort="tcaTime", satellite="starlink"
+    )
     print(result3)
