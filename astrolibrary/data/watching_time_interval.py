@@ -2,7 +2,7 @@ class WatchingTimeInterval:
     def __init__(self, object):
         self.__place_id = object["placeId"]
         self.__primary_id = object["pId"]
-        self.__primary_name = object["pName"]
+        self.__primary_name = "Apex"
         self.__secondary_id = object["sId"]
         self.__secondary_name = object["sName"]
         self.__dca = object["dca"]
