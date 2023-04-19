@@ -32,7 +32,7 @@ class ConjunctionAPI:
         response = self.__session.get(url, params=params)
         return self.__dict_to_conjunction_object(response.json()["data"])
 
-    def get_target_conjunctions(
+    def get_conjunctions_by_target_object(
         self,
         limit: int = 2,
         page: int = 0,
