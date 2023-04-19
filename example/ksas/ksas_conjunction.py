@@ -7,6 +7,7 @@
 
 
 import astrolibrary
+from astrolibrary.data.constellation import Constellation
 
 example_access_token = (
     "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
