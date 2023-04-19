@@ -4,12 +4,12 @@ import json
 class WatcherCatcher:
     def __init__(self, response):
         self.__id = response["_id"]
-        self.__latitude = response["latitude"]
-        self.__longitude = response["longitude"]
-        self.__altitude = response["altitude"]
-        self.__field_of_view = response["fieldOfView"]
-        self.__wc_epoch_time = response["wcEpochTime"]
-        self.__wc_end_time = response["wcEndTime"]
+        self.__apex_latitude = response["latitude"]
+        self.__apex_longitude = response["longitude"]
+        self.__cone_range = response["altitude"]
+        self.__cone_field_of_view = response["fieldOfView"]
+        self.__start_time_of_timeline = response["wcEpochTime"]
+        self.__end_time_of_timeline = response["wcEndTime"]
         self.__prediction_epoch_time = response["predictionEpochTime"]
         self.__wcdb = response["wcdb"]
 
@@ -18,28 +18,28 @@ class WatcherCatcher:
         return self.__id
 
     @property
-    def latitude(self):
-        return self.__latitude
+    def apex_latitude(self):
+        return self.__apex_latitude
 
     @property
-    def longitude(self):
-        return self.__longitude
+    def apex_longitude(self):
+        return self.__apex_longitude
 
     @property
-    def altitude(self):
-        return self.__altitude
+    def cone_range(self):
+        return self.__cone_range
 
     @property
-    def field_of_view(self):
-        return self.__field_of_view
+    def cone_field_of_view(self):
+        return self.__cone_field_of_view
 
     @property
-    def wc_epoch_time(self):
-        return self.__wc_epoch_time
+    def start_time_of_timeline(self):
+        return self.__start_time_of_timeline
 
     @property
-    def wc_end_time(self):
-        return self.__wc_end_time
+    def end_time_of_timeline(self):
+        return self.__end_time_of_timeline
 
     @property
     def prediction_epoch_time(self):
@@ -52,12 +52,12 @@ class WatcherCatcher:
     def __repr__(self) -> str:
         data = {
             "id": self.__id,
-            "latitude": self.__latitude,
-            "longitude": self.__longitude,
-            "altitude": self.__altitude,
-            "field_of_view": self.__field_of_view,
-            "wc_epoch_time": self.__wc_epoch_time,
-            "wc_end_time": self.__wc_end_time,
+            "apex_latitude": self.__apex_latitude,
+            "apex_longitude": self.__apex_longitude,
+            "cone_range": self.__cone_range,
+            "cone_field_of_view": self.__cone_field_of_view,
+            "start_time_of_timeline": self.__start_time_of_timeline,
+            "end_time_of_timeline": self.__end_time_of_timeline,
             "prediction_epoch_time": self.__prediction_epoch_time,
             "wcdb": [wcdb.__repr__() for wcdb in self.__wcdb],
         }
