@@ -8,10 +8,6 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 
-from OpenGLContext import testingcontext
-
-BaseContext = testingcontext.getInteractive()
-
 import numpy as np
 
 
@@ -28,29 +24,29 @@ class CustomOpenGL(QOpenGLWidget):
     def initializeGL(self):
         glClearColor(1, 1, 1, 0)
         glEnable(GL_BLEND)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
-        glClearDepth(10000)
-        glEnable(GL_DEPTH_TEST)
-        glDepthFunc(GL_LESS)
+        # glClearDepth(10000)
+        # glEnable(GL_DEPTH_TEST)
+        # glDepthFunc(GL_LESS)
 
-        glEnable(GL_CULL_FACE)
-        glShadeModel(GL_SMOOTH)
-        glEnable(GL_LIGHTING)
-        glEnable(GL_LIGHT0)
+        # glEnable(GL_CULL_FACE)
+        # glShadeModel(GL_SMOOTH)
+        # glEnable(GL_LIGHTING)
+        # glEnable(GL_LIGHT0)
 
-        glLightfv(GL_LIGHT0, GL_POSITION, [0, 0, 10, 1.0])
+        # glLightfv(GL_LIGHT0, GL_POSITION, [0, 0, 10, 1.0])
 
-        glEnable(GL_COLOR_MATERIAL)
+        # glEnable(GL_COLOR_MATERIAL)
 
-        qObj = gluNewQuadric()
-        gluQuadricNormals(qObj, GLU_SMOOTH)
+        # qObj = gluNewQuadric()
+        # gluQuadricNormals(qObj, GLU_SMOOTH)
 
-        glLineStipple(STIPPLE_FACTOR, STIPPLE_PATTERN)
+        # glLineStipple(STIPPLE_FACTOR, STIPPLE_PATTERN)
 
     def paintGL(self):
-        glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
-        # self.initialize_eye_position()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        self.initialize_eye_position()
         self.render_example_cube()
         # zoom(self.zoomFactor)
         # draw()
@@ -81,7 +77,7 @@ class CustomOpenGL(QOpenGLWidget):
         return True
 
     def render_example_cube(self):
-        glColor3f(1.0, 1.0, 1.0)
+        glColor3f(0.0, 0.0, 0.0)
         glLoadIdentity()  # clear the matrix
         # viewing transformation
         gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)

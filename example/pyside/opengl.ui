@@ -23,7 +23,7 @@
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QOpenGLWidget" name="openGLWidget"/>
+     <widget class="CustomOpenGL" name="openGLWidget"/>
     </item>
    </layout>
   </widget>
@@ -39,6 +39,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomOpenGL</class>
+   <extends>QOpenGLWidget</extends>
+   <header>customopengl.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
