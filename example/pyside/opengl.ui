@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1240</width>
+    <height>976</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,15 +15,83 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="AstroDisplay" name="openGLWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>200</horstretch>
+        <verstretch>200</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>200</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Time:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateTimeEdit" name="dateTimeEdit">
+          <property name="maximumTime">
+           <time>
+            <hour>23</hour>
+            <minute>59</minute>
+            <second>59</second>
+           </time>
+          </property>
+          <property name="currentSection">
+           <enum>QDateTimeEdit::YearSection</enum>
+          </property>
+          <property name="displayFormat">
+           <string notr="true">yyyy-MM-ddThh:mm:ssZ</string>
+          </property>
+          <property name="timeSpec">
+           <enum>Qt::LocalTime</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_play_and_pause">
+        <property name="text">
+         <string>▶/||</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
     <item row="2" column="0">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="pushButton_2">
       <property name="text">
        <string>PushButton</string>
       </property>
      </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="CustomOpenGL" name="openGLWidget"/>
     </item>
    </layout>
   </widget>
@@ -32,8 +100,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>24</height>
+     <width>1240</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -41,11 +109,31 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CustomOpenGL</class>
+   <class>AstroDisplay</class>
    <extends>QOpenGLWidget</extends>
-   <header>customopengl.h</header>
+   <header>astrodisplay.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_play_and_pause</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>play_simulation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1181</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1234</x>
+     <y>930</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>play_simulation()</slot>
+ </slots>
 </ui>

@@ -25,7 +25,6 @@ sgp4 = "^2.21"
 numpy = "^1.24.2"
 pyside6 = "^6.5.0"
 pyopengl = "^3.1.6"
-pyopengl-accelerate = "^3.1.6"
 
 [tool.black]
 line-length = 88

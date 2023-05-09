@@ -4,4 +4,4 @@ __pycache__
 dist
 .whl
 .gz
-build.sh
+bash.phs1

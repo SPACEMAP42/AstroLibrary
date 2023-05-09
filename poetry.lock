@@ -1178,31 +1178,6 @@ files = [
 ]
 
 [[package]]
-name = "pyopengl-accelerate"
-version = "3.1.6"
-description = "Acceleration code for PyOpenGL"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "PyOpenGL-accelerate-3.1.6.tar.gz", hash = "sha256:ad8a300256eca25228261de16f741e51a30f34f1e1b1cf68359f5c62dbcdcdc3"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp27-cp27m-win32.whl", hash = "sha256:bf2ab411f5a8b60be82b950e173732ecc90d68cfb1f96fe514a0137ae2f5c014"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp27-cp27m-win_amd64.whl", hash = "sha256:bb05c5700e6e7dc47e04c7cf0b7ca917029d61968b9b3ea0702870cea831908f"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp310-cp310-win32.whl", hash = "sha256:02625dc72a5813bc4ecfc95d8d6d8f47668d29e03a469af376cabe8c9a41efda"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp310-cp310-win_amd64.whl", hash = "sha256:3f178eddf12f4b248469d363ae2c4f1cc0ea0335f9a6703da2fb4c44e21a88b4"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp35-cp35m-win32.whl", hash = "sha256:f05628ea4c2425c0dcaabfb54747e209becdc8a6322d192c78ea5df7e1360d4a"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp35-cp35m-win_amd64.whl", hash = "sha256:c531775131936e8d46bee4520fd938b89286aa8bb8f251b154dfd101e717ffc4"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp36-cp36m-win32.whl", hash = "sha256:7550f8049788c16f3a0ec3ffdc0c75ed0b6cf995661fa046cdec7753e34b202f"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp36-cp36m-win_amd64.whl", hash = "sha256:9311e0abfcca752bf94ba18c360f1d69b6bd3188fb946dd58fb84138bac038ba"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp37-cp37m-win32.whl", hash = "sha256:c070e40154b4bb472e55ac7b30e170f6224d525111872f9af01ea1f67089c5bc"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp37-cp37m-win_amd64.whl", hash = "sha256:7eda1eeda3782d6dab2a86145a6511fa9f08b56ba1c593fb480a74477c5d7361"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp38-cp38-win32.whl", hash = "sha256:16d74e60229e94b596d7c280577638d77f2900bd80a4dc325f6d1039376c82fe"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp38-cp38-win_amd64.whl", hash = "sha256:95346d10db577ba42587677f8071408258b16c55ee7c1cc549ae8ecdf3d893dd"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp39-cp39-win32.whl", hash = "sha256:1011841fed437d6d4b8ed77dde62eb2a0dc0b1cf6feb9805bb2a2481b1017384"},
-    {file = "PyOpenGL_accelerate-3.1.6-cp39-cp39-win_amd64.whl", hash = "sha256:2c6d5bbff45d76125ff684b9231442668f9d7101175568bd1da1d54c8ade725f"},
-]
-
-[[package]]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -1642,4 +1617,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "c265cab0c515272202fa3bcb1775c98fba61ea587818604528d6a02661809c39"
+content-hash = "1cacc22df1fbf12318d2afabd3f3c48659b088d207f0f9a973de8c9d1e4794ad"
