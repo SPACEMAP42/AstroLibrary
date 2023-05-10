@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDateTimeEdit, QGridLayout, QHBoxLayout,
+from PySide6.QtWidgets import (QApplication, QDateTimeEdit, QHBoxLayout, QHeaderView,
     QLabel, QMainWindow, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QVBoxLayout,
-    QWidget)
+    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
+    QTableView, QVBoxLayout, QWidget)
 
 from astrodisplay import AstroDisplay
 
@@ -26,11 +26,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1240, 976)
+        MainWindow.resize(1348, 1044)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.gridLayout = QGridLayout(self.centralwidget)
-        self.gridLayout.setObjectName(u"gridLayout")
+        self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.openGLWidget = AstroDisplay(self.centralwidget)
         self.openGLWidget.setObjectName(u"openGLWidget")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
@@ -38,9 +40,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(200)
         sizePolicy.setHeightForWidth(self.openGLWidget.sizePolicy().hasHeightForWidth())
         self.openGLWidget.setSizePolicy(sizePolicy)
-        self.openGLWidget.setMinimumSize(QSize(200, 200))
+        self.openGLWidget.setMinimumSize(QSize(600, 200))
 
-        self.gridLayout.addWidget(self.openGLWidget, 0, 0, 1, 1)
+        self.horizontalLayout_3.addWidget(self.openGLWidget)
 
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -53,9 +55,16 @@ class Ui_MainWindow(object):
 
         self.dateTimeEdit = QDateTimeEdit(self.centralwidget)
         self.dateTimeEdit.setObjectName(u"dateTimeEdit")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.dateTimeEdit.sizePolicy().hasHeightForWidth())
+        self.dateTimeEdit.setSizePolicy(sizePolicy1)
+        self.dateTimeEdit.setMinimumSize(QSize(100, 0))
         self.dateTimeEdit.setMaximumTime(QTime(23, 59, 59))
         self.dateTimeEdit.setCurrentSection(QDateTimeEdit.YearSection)
         self.dateTimeEdit.setDisplayFormat(u"yyyy-MM-ddThh:mm:ssZ")
+        self.dateTimeEdit.setCalendarPopup(True)
         self.dateTimeEdit.setTimeSpec(Qt.LocalTime)
 
         self.horizontalLayout.addWidget(self.dateTimeEdit)
@@ -63,34 +72,85 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
+
         self.pushButton_play_and_pause = QPushButton(self.centralwidget)
         self.pushButton_play_and_pause.setObjectName(u"pushButton_play_and_pause")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.pushButton_play_and_pause.sizePolicy().hasHeightForWidth())
+        self.pushButton_play_and_pause.setSizePolicy(sizePolicy2)
+        self.pushButton_play_and_pause.setLayoutDirection(Qt.LeftToRight)
 
-        self.verticalLayout.addWidget(self.pushButton_play_and_pause)
+        self.horizontalLayout_2.addWidget(self.pushButton_play_and_pause)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
 
-        self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
+        self.horizontalLayout_3.addLayout(self.verticalLayout)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_3)
+
+        self.tabWidget = QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName(u"tabWidget")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
+        self.tabWidget.setSizePolicy(sizePolicy3)
+        self.tabWidget.setMinimumSize(QSize(200, 50))
+        self.tab = QWidget()
+        self.tab.setObjectName(u"tab")
+        self.verticalLayout_2 = QVBoxLayout(self.tab)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.tableView = QTableView(self.tab)
+        self.tableView.setObjectName(u"tableView")
+
+        self.verticalLayout_2.addWidget(self.tableView)
+
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.tabWidget.addTab(self.tab_2, "")
+
+        self.verticalLayout_3.addWidget(self.tabWidget)
 
         self.pushButton_2 = QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName(u"pushButton_2")
 
-        self.gridLayout.addWidget(self.pushButton_2, 2, 0, 1, 1)
+        self.verticalLayout_3.addWidget(self.pushButton_2)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1240, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1348, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
+        self.dateTimeEdit.dateTimeChanged.connect(MainWindow.change_simulation_time)
         self.pushButton_play_and_pause.clicked.connect(MainWindow.play_simulation)
+        self.tableView.doubleClicked.connect(MainWindow.update_watchercatcher_selection_in_table)
+
+        self.tabWidget.setCurrentIndex(0)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -99,6 +159,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Time:", None))
         self.pushButton_play_and_pause.setText(QCoreApplication.translate("MainWindow", u"\u25b6/||", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
     # retranslateUi
 
