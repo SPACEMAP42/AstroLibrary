@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1348</width>
-    <height>1044</height>
+    <height>831</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,7 +167,33 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <layout class="QFormLayout" name="formLayout">
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="treeLabel">
+            <property name="text">
+             <string>File Archive</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="tableLabel">
+            <property name="text">
+             <string>RFI results</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0">
            <widget class="QTreeView" name="treeView">
             <property name="sizePolicy">
@@ -179,19 +205,15 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QTableView" name="tableView"/>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>File Archive</string>
+           <widget class="QTableView" name="tableView">
+            <property name="enabled">
+             <bool>true</bool>
             </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>RFI results</string>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
            </widget>
           </item>
@@ -221,7 +243,7 @@
      <x>0</x>
      <y>0</y>
      <width>1348</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>
@@ -243,8 +265,8 @@
    <slot>change_simulation_time()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1143</x>
-     <y>42</y>
+     <x>1332</x>
+     <y>70</y>
     </hint>
     <hint type="destinationlabel">
      <x>1237</x>
@@ -259,8 +281,8 @@
    <slot>play_simulation()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1181</x>
-     <y>71</y>
+     <x>1236</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
      <x>1234</x>
@@ -275,12 +297,28 @@
    <slot>update_watchercatcher_selection_in_table()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>797</x>
-     <y>866</y>
+     <x>847</x>
+     <y>732</y>
     </hint>
     <hint type="destinationlabel">
      <x>1343</x>
      <y>992</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>treeView</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onTreeVoewDoubleClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>585</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1160</x>
+     <y>318</y>
     </hint>
    </hints>
   </connection>
@@ -291,5 +329,6 @@
   <slot>change_simulation_time()</slot>
   <slot>update_watchercatcher_table()</slot>
   <slot>update_watchercatcher_selection_in_table()</slot>
+  <slot>onTreeViewDoubleClicked()</slot>
  </slots>
 </ui>

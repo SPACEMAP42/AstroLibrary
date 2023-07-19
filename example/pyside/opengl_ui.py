@@ -15,7 +15,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDateTimeEdit, QFormLayout, QHBoxLayout,
+from PySide6.QtWidgets import (QApplication, QDateTimeEdit, QGridLayout, QHBoxLayout,
     QHeaderView, QLabel, QMainWindow, QMenuBar,
     QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
     QTabWidget, QTableView, QTreeView, QVBoxLayout,
@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1348, 1044)
+        MainWindow.resize(1348, 831)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
@@ -119,8 +119,19 @@ class Ui_MainWindow(object):
         self.tab.setObjectName(u"tab")
         self.verticalLayout_2 = QVBoxLayout(self.tab)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.formLayout = QFormLayout()
-        self.formLayout.setObjectName(u"formLayout")
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(10, 10, 10, 10)
+        self.treeLabel = QLabel(self.tab)
+        self.treeLabel.setObjectName(u"treeLabel")
+
+        self.gridLayout.addWidget(self.treeLabel, 0, 0, 1, 1)
+
+        self.tableLabel = QLabel(self.tab)
+        self.tableLabel.setObjectName(u"tableLabel")
+
+        self.gridLayout.addWidget(self.tableLabel, 0, 1, 1, 1)
+
         self.treeView = QTreeView(self.tab)
         self.treeView.setObjectName(u"treeView")
         sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
@@ -129,25 +140,21 @@ class Ui_MainWindow(object):
         sizePolicy4.setHeightForWidth(self.treeView.sizePolicy().hasHeightForWidth())
         self.treeView.setSizePolicy(sizePolicy4)
 
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.treeView)
+        self.gridLayout.addWidget(self.treeView, 1, 0, 1, 1)
 
         self.tableView = QTableView(self.tab)
         self.tableView.setObjectName(u"tableView")
+        self.tableView.setEnabled(True)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.tableView.sizePolicy().hasHeightForWidth())
+        self.tableView.setSizePolicy(sizePolicy5)
 
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.tableView)
-
-        self.label_2 = QLabel(self.tab)
-        self.label_2.setObjectName(u"label_2")
-
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_2)
-
-        self.label_3 = QLabel(self.tab)
-        self.label_3.setObjectName(u"label_3")
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.label_3)
+        self.gridLayout.addWidget(self.tableView, 1, 1, 1, 1)
 
 
-        self.verticalLayout_2.addLayout(self.formLayout)
+        self.verticalLayout_2.addLayout(self.gridLayout)
 
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QWidget()
@@ -164,7 +171,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1348, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1348, 24))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -174,6 +181,7 @@ class Ui_MainWindow(object):
         self.dateTimeEdit.dateTimeChanged.connect(MainWindow.change_simulation_time)
         self.pushButton_play_and_pause.clicked.connect(MainWindow.play_simulation)
         self.tableView.doubleClicked.connect(MainWindow.update_watchercatcher_selection_in_table)
+        self.treeView.doubleClicked.connect(MainWindow.onTreeViewDoubleClicked)
 
         self.tabWidget.setCurrentIndex(0)
 
@@ -185,8 +193,8 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Time:", None))
         self.pushButton_play_and_pause.setText(QCoreApplication.translate("MainWindow", u"\u25b6/||", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"File Archive", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"RFI results", None))
+        self.treeLabel.setText(QCoreApplication.translate("MainWindow", u"File Archive", None))
+        self.tableLabel.setText(QCoreApplication.translate("MainWindow", u"RFI results", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))

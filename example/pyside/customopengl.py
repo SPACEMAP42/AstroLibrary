@@ -141,7 +141,7 @@ class CustomOpenGL(QOpenGLWidget):
             glVertex3f(point[0][0], point[0][1], point[0][2])
         glEnd()
         glEnable(GL_LIGHTING)
-        print(f"draw: {time.time()-start:.4f} sec")  # 종료와 함께 수행시간 출력
+        # print(f"draw: {time.time()-start:.4f} sec")  # 종료와 함께 수행시간 출력
 
     def wheelEvent(self, event):
         self.zoomFactor += event.angleDelta().y() / 1000.0
