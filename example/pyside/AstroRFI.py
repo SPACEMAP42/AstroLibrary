@@ -24,7 +24,7 @@ from PySide6.QtGui import QStandardItemModel, QStandardItem
 from opengl_ui import Ui_MainWindow
 from space_objects import SpaceObjects
 
-import time, os, random, datetime, sys
+import time, os, random, datetime, sys, re
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -122,10 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def treeViewInit(self):
         # archive 디렉토리 경로 설정
         currentPath = QDir.currentPath()
-        print(currentPath)
-        archivePath = (
-            currentPath + "/Archive"
-        )  # archivePath = os.path.join(currentPath, "/Archive")
+        archivePath = currentPath + "/data" 
 
         # QFileSystemModel을 생성하고 루트 경로를 "Archive" 디렉토리로 설정
         model = QFileSystemModel()
@@ -137,14 +134,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         proxyModel.setSourceModel(model)
 
         # 필터 조건 설정
-        nameFilter = QRegularExpression("[0-9]?")
+        nameFilter = QRegularExpression("")
         proxyModel.setFilterRegularExpression(nameFilter)
+        # proxyModel.setRecursiveFilteringEnabled(True)
         proxyModel.setFilterKeyColumn(0)
 
         # treeView를 생성하고 필터된 모델을 설정
         self.treeView.setModel(proxyModel)
         self.treeView.setRootIndex(proxyModel.mapFromSource(model.index(archivePath)))
-        self.treeView.setColumnWidth(0, 150)
+        self.treeView.setColumnWidth(0, 300)
 
         # treeView의 doubleClicked 시그널을 슬롯 함수에 연결
         self.treeView.doubleClicked.connect(lambda index: self.onTreeViewDoubleClicked)
@@ -165,7 +163,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def loadDataToWatcherCatcher(self, filePath):
         # initial file로 부터 target satellite와 site 정보를 추출
         initialFilePath = filePath.split("/")
-        initialFilePath[-1] = "initial.txt"
+        pattern = r"rfi_result_\d+\.txt"
+        if not bool(re.fullmatch(pattern, initialFilePath[-1])):
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error")
+            dlg.setText("RFI 결과 파일명이 올바르지 않습니다.")
+            dlg.move(self.frameGeometry().center() - dlg.frameGeometry().center())
+            dlg.exec()
+            return
+        
+        index = initialFilePath[-1].split(".")[0].split("_")[-1]
+        initialFilePath[-1] = f"targets_n_sites_{index}.txt"
         initialFilePath = "/".join(initialFilePath)
 
         try:
@@ -173,7 +181,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except FileNotFoundError:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error")
-            dlg.setText("initial 파일을 찾을 수 없습니다.")
+            dlg.setText("RFI 결과 파일과 대응되는 입력 파일을 찾을 수 없습니다.")
             dlg.move(self.frameGeometry().center() - dlg.frameGeometry().center())
             dlg.exec()
             return
@@ -259,8 +267,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             for siteData in site[-int(data[0])].split(" "):
                 temp.append(siteData)
-            temp.append(startTime.strftime("%Y-%m-%d %H:%M:%S.%f"))
-            temp.append(endTime.strftime("%Y-%m-%d %H:%M:%S.%f"))
+            temp.append(startTime.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
+            temp.append(endTime.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
             result.append(temp)
 
         # Main window에 RFI results 출력
