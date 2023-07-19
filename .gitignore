@@ -5,3 +5,5 @@ dist
 .whl
 .gz
 bash.phs1
+build
+*.spec

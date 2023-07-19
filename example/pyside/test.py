@@ -122,6 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def treeViewInit(self):
         # archive 디렉토리 경로 설정
         currentPath = QDir.currentPath()
+        print(currentPath)
         archivePath = (
             currentPath + "/Archive"
         )  # archivePath = os.path.join(currentPath, "/Archive")
