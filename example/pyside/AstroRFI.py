@@ -1,31 +1,16 @@
 from datetime import datetime
 from rfi_module import main
 import astrolibrary
-
-from PySide6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QAbstractItemView,
-    QHeaderView,
-    QFileSystemModel,
-    QMessageBox,
-)
-from PySide6.QtCore import (
-    QTimer,
-    Signal,
-    Slot,
-    QDateTime,
-    Qt,
-    QDir,
-    QSortFilterProxyModel,
-    QRegularExpression,
-)
+from astrolibrary.data.tle import TLE 
+from PySide6.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QHeaderView, QFileSystemModel, QMessageBox
+from PySide6.QtCore import QTimer, QDateTime, Qt, QDir, QSortFilterProxyModel, QRegularExpression
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from opengl_ui import Ui_MainWindow
 from space_objects import SpaceObjects
 
-import time, os, random, datetime, sys, re
+from datetime import datetime
+import time, random, datetime, re
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -36,7 +21,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.astro_client = astrolibrary.Client(
             "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
         )
-        self.space_objects = SpaceObjects(self.astro_client.tle_API.get_recent_tles())
+        # self.space_objects = SpaceObjects(self.astro_client.tle_API.get_recent_tles())
+        self.space_objects = SpaceObjects([])
         self.watchercatcher_modal = QStandardItemModel()
 
         self.simulation_timer = QTimer()
@@ -65,9 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
         self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
         self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
-        self.watchercatcher_modal.setHeaderData(
-            3, Qt.Horizontal, "Site Longitude (deg)"
-        )
+        self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
         self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Cone Angle (deg)")
         self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "Cone Range (Km)")
         self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Interference Angle")
@@ -166,37 +150,69 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 파일로부터 데이터를 추출한 다음, watchercatcher_modal을 채움
             self.loadDataToWatcherCatcher(filePath)
 
-    def loadDataToWatcherCatcher(self, filePath):
-        # initial file로 부터 target satellite와 site 정보를 추출
-        initialFilePath = filePath.split("/")
-        pattern = r"rfi_result_\d+\.txt"
-        if not bool(re.fullmatch(pattern, initialFilePath[-1])):
-            dlg = QMessageBox(self)
-            dlg.setWindowTitle("Error")
-            dlg.setText("RFI 결과 파일명이 올바르지 않습니다.")
-            dlg.move(self.frameGeometry().center() - dlg.frameGeometry().center())
-            dlg.exec()
-            return
-        
-        index = initialFilePath[-1].split(".")[0].split("_")[-1]
-        initialFilePath[-1] = f"targets_n_sites_{index}.txt"
-        initialFilePath = "/".join(initialFilePath)
-
+    def __get_recent_TLE_file_path(self, file_path):
+        # TLE 데이터를 추출하여 opengl_ui에 rendering
+        tle_file_path = file_path.split("/")
+        tle_file_path[-1] = "recent.tle"
+        return "/".join(tle_file_path)
+    
+    def __load_TLE_data(self, tle_file_path):
         try:
-            initialData = open(initialFilePath, "r", encoding="UTF8")
+            tle_data = open(tle_file_path, "r", encoding="UTF8")
+            return tle_data.read()
         except FileNotFoundError:
-            dlg = QMessageBox(self)
-            dlg.setWindowTitle("Error")
-            dlg.setText("RFI 결과 파일과 대응되는 입력 파일을 찾을 수 없습니다.")
-            dlg.move(self.frameGeometry().center() - dlg.frameGeometry().center())
-            dlg.exec()
-            return
+            self.__handle_error("TLE 파일을 찾을 수 없습니다.")
+            return None
+    
+    def __handle_error(self, message):
+        self.watchercatcher_modal.removeRows(0, self.watchercatcher_modal.rowCount())
+        self.space_objects = SpaceObjects([])
+        self.change_simulation_time()
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle("Error")
+        dlg.setText(message)
+        dlg.move(self.frameGeometry().center() - dlg.frameGeometry().center())
+        dlg.exec()
 
+    def __parse_TLE_data(self, tles):
+        tle_list = list()
+        lines = tles.split('\n')
+
+        for i in range(0, len(lines), 3):
+            tle_dict = dict()
+            tle_dict["name"] = lines[i].split(' ', 1)[1]
+            tle_dict["firstLine"] = lines[i + 1]
+            tle_dict["secondLine"] = lines[i + 2]
+            tle = TLE(tle_dict)
+            tle_list.append(tle)
+
+        return tle_list
+    
+    def __get_target_and_site_file_path(self, file_path):
+        target_and_site_file_path = file_path.split("/")
+        pattern = r"rfi_result_\d+\.txt"
+        if not bool(re.fullmatch(pattern, target_and_site_file_path[-1])):
+            self.__handle_error("RFI 결과 파일명이 올바르지 않습니다.")
+            return None
+
+        index = target_and_site_file_path[-1].split(".")[0].split("_")[-1]
+        target_and_site_file_path[-1] = f"targets_n_sites_{index}.txt"
+        return "/".join(target_and_site_file_path)
+    
+    def __load_target_and_site_data(self, target_and_site_file_path):
+        try:
+            target_and_site_data = open(target_and_site_file_path, "r", encoding="UTF8")
+            return target_and_site_data
+        except FileNotFoundError:
+            self.__handle_error("RFI 결과 파일과 대응되는 입력 파일을 찾을 수 없습니다.")
+            return None
+    
+    def __extract_target_and_site_data(self, target_and_site_data):
         target = list()
         site = list()
         select = 1
         option = [target, site]
-        for line in initialData:
+        for line in target_and_site_data:
             line = line.replace("\n", "")
             if line == "":
                 continue
@@ -205,17 +221,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 continue
             option[select].append(line.split(" ", 1)[1])
 
-        initialData.close()
+        target_and_site_data.close()
+        return target, site
 
-        # output file로 부터 RFI 관련 데이터 추출
-        targetId = list()
-        for sat in target:
-            targetId.append(sat.split(" ")[1])
+    # sample data에 random id를 부여하는 함수
+    # 추후 실제 데이터를 불러올 경우 함수가 수정되어야 함
+    def __extract_rfi_result_data(self, rfi_result, target, site):
+        target_id = [sat.split(" ")[1] for sat in target]
 
-        outputData = open(filePath, "r", encoding="UTF8")
-
-        result = list()
-        for line in outputData:
+        rfi_list = list()
+        for line in rfi_result:
             line = line.replace("\n", "")
             if line[0] == "%":
                 continue
@@ -223,14 +238,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if len(data) < 15:
                 if line[-2] == "0":
                     continue
-                ranID = random.choice(targetId)
-                data.append(ranID)
+                ran_id = random.choice(target_id)
+                data.append(ran_id)
 
             try:
                 second = float(data[11])
                 second_int = int(second)
                 microseconds = int((second - second_int) * 1000000)
-                tcaTime = datetime.datetime(
+                tca_time = datetime.datetime(
                     int(data[6]),
                     int(data[7]),
                     int(data[8]),
@@ -243,89 +258,92 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 second = float(data[3]) - float(data[4])
                 second_int = int(second)
                 microseconds = int((second - second_int) * 1000000)
-                firstTimeDifference = datetime.timedelta(
+                start_to_tca_time_diffrence = datetime.timedelta(
                     seconds=second, microseconds=microseconds
                 )
-                startTime = tcaTime - firstTimeDifference
+                start_time = tca_time - start_to_tca_time_diffrence
 
                 second = float(data[5]) - float(data[3])
                 second_int = int(second)
                 microseconds = int((second - second_int) * 1000000)
-                secondTimeDifference = datetime.timedelta(
+                tca_to_end_time_diffrence = datetime.timedelta(
                     seconds=second, microseconds=microseconds
                 )
-                endTime = tcaTime + secondTimeDifference
+                end_time = tca_time + tca_to_end_time_diffrence
 
             except IndexError:
-                # watchercatcher_modal에서 기존 데이터를 지우고 헤더 데이터를 유지합니다
-                self.watchercatcher_modal.removeRows(
-                    0, self.watchercatcher_modal.rowCount()
-                )
-                dlg = QMessageBox(self)
-                dlg.setWindowTitle("Error")
-                dlg.setText("파일의 형식이 올바르지 않습니다.")
-                dlg.move(self.frameGeometry().center() - dlg.frameGeometry().center())
-                dlg.exec()
-                return
+                self.__handle_error("파일의 형식이 올바르지 않습니다.")
+                return None
 
-            temp = list()
-            temp.append(data[-1])
+            rfi_data = list()
+            rfi_data.append(data[-1])
+            for siteData in site[-int(data[0])].split(" "): rfi_data.append(siteData)
+            rfi_data.append(start_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
+            rfi_data.append(end_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
+            rfi_list.append(rfi_data)
 
-            for siteData in site[-int(data[0])].split(" "):
-                temp.append(siteData)
-            temp.append(startTime.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
-            temp.append(endTime.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
-            result.append(temp)
-
-        # Main window에 RFI results 출력
-        curr_row = 0
+        return rfi_list
+    
+    def show_rfi_results(self, result):
         NUM_COL_WATCHERCATCHER = 9
+        curr_row = 0
+
         for curr_data in result:
             curr_item = QStandardItem(1, NUM_COL_WATCHERCATCHER)
             self.watchercatcher_modal.insertRow(curr_row, curr_item)
-            self.watchercatcher_modal.setHeaderData(
-                0, Qt.Horizontal, "Target Satellite"
-            )
+            self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
             self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
-            self.watchercatcher_modal.setHeaderData(
-                2, Qt.Horizontal, "Site Latitude (deg)"
-            )
-            self.watchercatcher_modal.setHeaderData(
-                3, Qt.Horizontal, "Site Longitude (deg)"
-            )
-            self.watchercatcher_modal.setHeaderData(
-                4, Qt.Horizontal, "Cone Angle (deg)"
-            )
+            self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
+            self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
+            self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Cone Angle (deg)")
             self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "Cone Range (Km)")
-            self.watchercatcher_modal.setHeaderData(
-                6, Qt.Horizontal, "Interference Angle"
-            )
+            self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Interference Angle")
             self.watchercatcher_modal.setHeaderData(7, Qt.Horizontal, "Start Time")
             self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "End Time")
 
-            targetSatellite = self.watchercatcher_modal.index(curr_row, 0)
-            siteName = self.watchercatcher_modal.index(curr_row, 1)
-            siteLatitude = self.watchercatcher_modal.index(curr_row, 2)
-            siteLongitude = self.watchercatcher_modal.index(curr_row, 3)
-            coneAngle = self.watchercatcher_modal.index(curr_row, 4)
-            coneRange = self.watchercatcher_modal.index(curr_row, 5)
-            interferenceAangle = self.watchercatcher_modal.index(curr_row, 6)
-            startTime = self.watchercatcher_modal.index(curr_row, 7)
-            endTime = self.watchercatcher_modal.index(curr_row, 8)
+            target_satellite = self.watchercatcher_modal.index(curr_row, 0)
+            site_name = self.watchercatcher_modal.index(curr_row, 1)
+            site_latitude = self.watchercatcher_modal.index(curr_row, 2)
+            site_longitude = self.watchercatcher_modal.index(curr_row, 3)
+            cone_angle = self.watchercatcher_modal.index(curr_row, 4)
+            cone_range = self.watchercatcher_modal.index(curr_row, 5)
+            interference_angle = self.watchercatcher_modal.index(curr_row, 6)
+            start_time = self.watchercatcher_modal.index(curr_row, 7)
+            end_time = self.watchercatcher_modal.index(curr_row, 8)
 
-            self.watchercatcher_modal.setData(targetSatellite, curr_data[0])
-            self.watchercatcher_modal.setData(siteName, curr_data[1])
-            self.watchercatcher_modal.setData(siteLatitude, curr_data[2])
-            self.watchercatcher_modal.setData(siteLongitude, curr_data[3])
-            self.watchercatcher_modal.setData(coneAngle, curr_data[4])
-            self.watchercatcher_modal.setData(coneRange, curr_data[5])
-            self.watchercatcher_modal.setData(interferenceAangle, curr_data[6])
-            self.watchercatcher_modal.setData(startTime, curr_data[7])
-            self.watchercatcher_modal.setData(endTime, curr_data[8])
+            self.watchercatcher_modal.setData(target_satellite, curr_data[0])
+            self.watchercatcher_modal.setData(site_name, curr_data[1])
+            self.watchercatcher_modal.setData(site_latitude, curr_data[2])
+            self.watchercatcher_modal.setData(site_longitude, curr_data[3])
+            self.watchercatcher_modal.setData(cone_angle, curr_data[4])
+            self.watchercatcher_modal.setData(cone_range, curr_data[5])
+            self.watchercatcher_modal.setData(interference_angle, curr_data[6])
+            self.watchercatcher_modal.setData(start_time, curr_data[7])
+            self.watchercatcher_modal.setData(end_time, curr_data[8])
 
-            # temporary code, we can't handle QItem now.
             self.map_row_index_to_watchercatcher[curr_row] = curr_data
             curr_row += 1
+
+
+    def loadDataToWatcherCatcher(self, file_path):
+        tle_file_path = self.__get_recent_TLE_file_path(file_path)
+        tle_data = self.__load_TLE_data(tle_file_path)
+        if tle_data is None: return
+
+        tle_list = self.__parse_TLE_data(tle_data)
+        self.space_objects = SpaceObjects(tle_list)
+        self.change_simulation_time()
+
+        target_and_site_file_path = self.__get_target_and_site_file_path(file_path)
+        target_and_site_data = self.__load_target_and_site_data(target_and_site_file_path)
+        if target_and_site_data is None: return
+        target, site = self.__extract_target_and_site_data(target_and_site_data)
+
+        rfi_result_data = open(file_path, "r", encoding="UTF8")
+        rfi_list = self.__extract_rfi_result_data(rfi_result_data, target, site)
+        rfi_result_data.close()
+
+        self.show_rfi_results(rfi_list)
 
 
 if __name__ == "__main__":
@@ -333,5 +351,3 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     app.exec()
-
-
