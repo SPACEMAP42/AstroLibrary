@@ -1,21 +1,23 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QDialog
 from PySide6.QtCore import QDateTime
 from rfi_module.WatcherCatcher_ui import Ui_Dialog
-import os
+import os, sys
 from datetime import datetime
 import pyproj
-
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 class Dialog(QMainWindow, Ui_Dialog):
     def __init__(self, *args, obj=None, **kwargs):
         super(Dialog, self).__init__(*args, **kwargs)
+
+    def init(self, path):
         self.setupUi(self)
         self.targetSatellite.setRowCount(0)
         self.site.setRowCount(0)
         self.startTimeInput.setDateTime(QDateTime.currentDateTime())
         self.endTimeInput.setDateTime(QDateTime.currentDateTime())
         self.endTimeInput.setMinimumDateTime(self.startTimeInput.dateTime())
-        self.upload_file()
+        self.upload_file(path) #실행파일 (AstroRFI.py 경로 전달)
         self.submitButton.clicked.connect(self.submit_button_click)
         self.targetAddButton.clicked.connect(self.target_add_click)
         self.targetDeleteButton.clicked.connect(self.target_delete_click)
@@ -23,28 +25,28 @@ class Dialog(QMainWindow, Ui_Dialog):
         self.siteDeleteButton.clicked.connect(self.site_delete_click)
         
 
+
     def create_folder(self, dir):
         today_list = str(datetime.today().date()).split("-")
-        path = os.getcwd() + dir
+        path = current_path + dir  #현재 파일이 있는 위치에 directory 를 만든다.
         try:
-            if not os.path.exists(path):
+            if not os.path.exists(path):  #파라미터로 받은 dir(여기서는 data) 폴더가 존재하지 않으면 만든다.
                 os.mkdir(path)
-            for date in today_list:
-                if not os.path.exists(path + "/" + date):
+            for date in today_list:  #today_list = [연도, 월, 일] 이고 연도부터 폴더가 있는지 확인하고 없으면 만든다.
+                if not os.path.exists(path + "/" + date): 
                     os.mkdir(path + "/" + date)
-                path = path + "/" + date
-            return path
+                path = path + "/" + date #경로/연도/월/일 폴더로 하나씩 들어간다.
+            return path  #path =경로/연도/월/일 
         except OSError:
             print('Error: Creating directory...')
 
 
-    def upload_file(self):
-        input = open(os.getcwd() + "/config/targets_n_sites.txt", "r")
+    def upload_file(self, path): 
+        input = open(path + "/config/targets_n_sites.txt", "r") #파라미터로 받은 path 에 있는 config 폴더의 파일을 오픈 => 실행파일이 있는 위치에 있는 config 폴더
         lines = input.readlines()
         isTarget = True
-        for line in lines:
+        for line in lines: #Target / Site 에 따라 각각 테이블에 정보를 저장
             line = line.strip()
-            
             if(line == "Target"):
                 isTarget = True
                 continue
@@ -66,8 +68,9 @@ class Dialog(QMainWindow, Ui_Dialog):
                         self.site.setItem(int(info[0]),i, QTableWidgetItem(info[i+1]))
         input.close()
 
-    def write_new_targets_n_sites_file(self, filepath):
-        file = open(filepath, "w")
+    def write_new_targets_n_sites_file(self, filepath): #초기 파일에서 불러온 후 수정한 테이블의 값을 새로운 파일에 기록하는 함수
+        #filepath 는 file 이름을 포함한 파일 경로 => ~/targets_n_sites_idx.txt
+        file = open(filepath, "w") 
         file.write("Target\n")
         for i in range(self.targetSatellite.rowCount()):
             data_list = []
@@ -96,10 +99,10 @@ class Dialog(QMainWindow, Ui_Dialog):
             file.write('\n')
         file.close()
 
-    def write_rfi_arguments_file(self, input_file_path, result_file_path):
+    def write_rfi_arguments_file(self, input_file_path, result_file_path): #결과를 저장하는 함수 => rfi_arguments_idx.txt
         file = open(result_file_path, "w")
         increment_unit_time = 1
-        for i in range(self.site.rowCount()):
+        for i in range(self.site.rowCount()): #site x target
             for j in range(self.targetSatellite.rowCount()):
                 data_list = []
                 data_list.append(str(-1*int(i))) #index
@@ -132,7 +135,8 @@ class Dialog(QMainWindow, Ui_Dialog):
         path = self.create_folder(dir)
         input_file_path = '%s/%s_%d.txt'%(path,input_file_name,idx)
         result_file_path = '%s/%s_%d.txt'%(path,result_file_name,idx)
-        while os.path.exists(input_file_path):
+
+        while os.path.exists(input_file_path): #파일 이름에 index 붙이는 과정
             idx += 1
             input_file_path = '%s/%s_%d.txt'%(path,input_file_name,idx)
             result_file_path = '%s/%s_%d.txt'%(path,result_file_name,idx)

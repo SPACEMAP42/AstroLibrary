@@ -11,7 +11,7 @@ from space_objects import SpaceObjects
 
 from datetime import datetime
 import time, random, datetime, re
-
+import os
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
@@ -38,7 +38,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.rfiButton.clicked.connect(self.rfi_exe)
 
     def rfi_exe(self):
+        path = os.path.dirname(os.path.abspath(__file__)) #현재 파일 경로
         self.rfi = main.Dialog()
+        self.rfi.init(path) #dialog 모달로 현재 파일 경로 전달
         self.rfi.show()
 
     def load_watchercatcher(self):
