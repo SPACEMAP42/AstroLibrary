@@ -1,4 +1,5 @@
 from datetime import datetime
+from rfi_module import main
 import astrolibrary
 
 from PySide6.QtWidgets import (
@@ -48,6 +49,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.load_watchercatcher()
         self.treeViewInit()
+        self.rfiButton.clicked.connect(self.rfi_exe)
+
+    def rfi_exe(self):
+        self.rfi = main.Dialog()
+        self.rfi.show()
 
     def load_watchercatcher(self):
         self.tableView.resizeRowsToContents()
@@ -327,3 +333,5 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     app.exec()
+
+
