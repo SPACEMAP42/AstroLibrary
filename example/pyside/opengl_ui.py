@@ -97,6 +97,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
+        self.rfiButton = QPushButton(self.centralwidget)
+        self.rfiButton.setObjectName(u"rfiButton")
+
+        self.verticalLayout.addWidget(self.rfiButton)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -193,6 +198,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Time:", None))
         self.pushButton_play_and_pause.setText(QCoreApplication.translate("MainWindow", u"\u25b6/||", None))
+        self.rfiButton.setText(QCoreApplication.translate("MainWindow", u"RFI", None))
         self.treeLabel.setText(QCoreApplication.translate("MainWindow", u"File Archive", None))
         self.tableLabel.setText(QCoreApplication.translate("MainWindow", u"RFI results", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
