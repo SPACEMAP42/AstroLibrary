@@ -1,9 +1,23 @@
 from datetime import datetime
 from rfi_module import main
-import astrolibrary
-from astrolibrary.data.tle import TLE 
-from PySide6.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QHeaderView, QFileSystemModel, QMessageBox
-from PySide6.QtCore import QTimer, QDateTime, Qt, QDir, QSortFilterProxyModel, QRegularExpression
+
+from astrolibrary.data.tle import TLE
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QAbstractItemView,
+    QHeaderView,
+    QFileSystemModel,
+    QMessageBox,
+)
+from PySide6.QtCore import (
+    QTimer,
+    QDateTime,
+    Qt,
+    QDir,
+    QSortFilterProxyModel,
+    QRegularExpression,
+)
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 from opengl_ui import Ui_MainWindow
@@ -13,15 +27,12 @@ from datetime import datetime
 import time, random, datetime, re
 import os
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.astro_client = astrolibrary.Client(
-            "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
-        )
-        # self.space_objects = SpaceObjects(self.astro_client.tle_API.get_recent_tles())
         self.space_objects = SpaceObjects([])
         self.watchercatcher_modal = QStandardItemModel()
 
@@ -38,9 +49,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.rfiButton.clicked.connect(self.rfi_exe)
 
     def rfi_exe(self):
-        path = os.path.dirname(os.path.abspath(__file__)) #현재 파일 경로
+        path = os.path.dirname(os.path.abspath(__file__))  # 현재 파일 경로
         self.rfi = main.Dialog()
-        self.rfi.init(path) #dialog 모달로 현재 파일 경로 전달
+        self.rfi.init(path)  # dialog 모달로 현재 파일 경로 전달
         self.rfi.show()
 
     def load_watchercatcher(self):
@@ -53,7 +64,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
         self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
         self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
-        self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
+        self.watchercatcher_modal.setHeaderData(
+            3, Qt.Horizontal, "Site Longitude (deg)"
+        )
         self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Cone Angle (deg)")
         self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "Cone Range (Km)")
         self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Interference Angle")
@@ -114,7 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def treeViewInit(self):
         # archive 디렉토리 경로 설정
         currentPath = QDir.currentPath()
-        archivePath = currentPath + "/data" 
+        archivePath = currentPath + "/data"
 
         # QFileSystemModel을 생성하고 루트 경로를 "Archive" 디렉토리로 설정
         model = QFileSystemModel()
@@ -157,7 +170,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         tle_file_path = file_path.split("/")
         tle_file_path[-1] = "recent.tle"
         return "/".join(tle_file_path)
-    
+
     def __load_TLE_data(self, tle_file_path):
         try:
             tle_data = open(tle_file_path, "r", encoding="UTF8")
@@ -165,7 +178,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except FileNotFoundError:
             self.__handle_error("TLE 파일을 찾을 수 없습니다.")
             return None
-    
+
     def __handle_error(self, message):
         self.watchercatcher_modal.removeRows(0, self.watchercatcher_modal.rowCount())
         self.space_objects = SpaceObjects([])
@@ -178,18 +191,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __parse_TLE_data(self, tles):
         tle_list = list()
-        lines = tles.split('\n')
+        lines = tles.split("\n")
 
         for i in range(0, len(lines), 3):
             tle_dict = dict()
-            tle_dict["name"] = lines[i].split(' ', 1)[1]
+            tle_dict["name"] = lines[i].split(" ", 1)[1]
             tle_dict["firstLine"] = lines[i + 1]
             tle_dict["secondLine"] = lines[i + 2]
             tle = TLE(tle_dict)
             tle_list.append(tle)
 
         return tle_list
-    
+
     def __get_target_and_site_file_path(self, file_path):
         target_and_site_file_path = file_path.split("/")
         pattern = r"rfi_result_\d+\.txt"
@@ -200,7 +213,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         index = target_and_site_file_path[-1].split(".")[0].split("_")[-1]
         target_and_site_file_path[-1] = f"targets_n_sites_{index}.txt"
         return "/".join(target_and_site_file_path)
-    
+
     def __load_target_and_site_data(self, target_and_site_file_path):
         try:
             target_and_site_data = open(target_and_site_file_path, "r", encoding="UTF8")
@@ -208,7 +221,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except FileNotFoundError:
             self.__handle_error("RFI 결과 파일과 대응되는 입력 파일을 찾을 수 없습니다.")
             return None
-    
+
     def __extract_target_and_site_data(self, target_and_site_data):
         target = list()
         site = list()
@@ -279,13 +292,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             rfi_data = list()
             rfi_data.append(data[-1])
-            for siteData in site[-int(data[0])].split(" "): rfi_data.append(siteData)
+            for siteData in site[-int(data[0])].split(" "):
+                rfi_data.append(siteData)
             rfi_data.append(start_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
             rfi_data.append(end_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
             rfi_list.append(rfi_data)
 
         return rfi_list
-    
+
     def show_rfi_results(self, result):
         NUM_COL_WATCHERCATCHER = 9
         curr_row = 0
@@ -293,13 +307,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for curr_data in result:
             curr_item = QStandardItem(1, NUM_COL_WATCHERCATCHER)
             self.watchercatcher_modal.insertRow(curr_row, curr_item)
-            self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
+            self.watchercatcher_modal.setHeaderData(
+                0, Qt.Horizontal, "Target Satellite"
+            )
             self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
-            self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
-            self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
-            self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Cone Angle (deg)")
+            self.watchercatcher_modal.setHeaderData(
+                2, Qt.Horizontal, "Site Latitude (deg)"
+            )
+            self.watchercatcher_modal.setHeaderData(
+                3, Qt.Horizontal, "Site Longitude (deg)"
+            )
+            self.watchercatcher_modal.setHeaderData(
+                4, Qt.Horizontal, "Cone Angle (deg)"
+            )
             self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "Cone Range (Km)")
-            self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Interference Angle")
+            self.watchercatcher_modal.setHeaderData(
+                6, Qt.Horizontal, "Interference Angle"
+            )
             self.watchercatcher_modal.setHeaderData(7, Qt.Horizontal, "Start Time")
             self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "End Time")
 
@@ -326,19 +350,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.map_row_index_to_watchercatcher[curr_row] = curr_data
             curr_row += 1
 
-
     def loadDataToWatcherCatcher(self, file_path):
         tle_file_path = self.__get_recent_TLE_file_path(file_path)
         tle_data = self.__load_TLE_data(tle_file_path)
-        if tle_data is None: return
+        if tle_data is None:
+            return
 
         tle_list = self.__parse_TLE_data(tle_data)
         self.space_objects = SpaceObjects(tle_list)
         self.change_simulation_time()
 
         target_and_site_file_path = self.__get_target_and_site_file_path(file_path)
-        target_and_site_data = self.__load_target_and_site_data(target_and_site_file_path)
-        if target_and_site_data is None: return
+        target_and_site_data = self.__load_target_and_site_data(
+            target_and_site_file_path
+        )
+        if target_and_site_data is None:
+            return
         target, site = self.__extract_target_and_site_data(target_and_site_data)
 
         rfi_result_data = open(file_path, "r", encoding="UTF8")

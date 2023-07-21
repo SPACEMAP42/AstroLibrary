@@ -1,12 +1,11 @@
 [tool.poetry]
 name = "astrolibrary"
 description = "A set of APIs to analyze and predict space objects"
-version = "0.1.1"
+version = "0.1.2"
 packages = [ { include = "astrolibrary" } ]
 authors = ["spacemap Developers"]
 maintainers = ["spacemap <contact@spacemap42.com>"]
 readme = "README.md"
-include = ["astrolibrary/config.ini"]
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.22.0"
 
@@ -16,7 +15,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"
+python = ">=3.9,<3.12"
 black = "^23.3.0"
 requests = "^2.28.2"
 configparser = "^5.3.0"
@@ -24,7 +23,7 @@ matplotlib = "^3.7.1"
 sgp4 = "^2.21"
 numpy = "^1.24.2"
 pyside6 = "^6.5.0"
-pyopengl = "^3.1.6"
+pyproj = "^3.6.0"
 
 [tool.black]
 line-length = 88
