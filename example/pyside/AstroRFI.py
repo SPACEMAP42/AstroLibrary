@@ -59,19 +59,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView.setSelectionMode(QAbstractItemView.SingleSelection)
 
-        NUM_COL_WATCHERCATCHER = 9
+        NUM_COL_WATCHERCATCHER = 10
         self.watchercatcher_modal.setColumnCount(NUM_COL_WATCHERCATCHER)
         self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
         self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
         self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
-        self.watchercatcher_modal.setHeaderData(
-            3, Qt.Horizontal, "Site Longitude (deg)"
-        )
-        self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Cone Angle (deg)")
-        self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "Cone Range (Km)")
-        self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Interference Angle")
-        self.watchercatcher_modal.setHeaderData(7, Qt.Horizontal, "Start Time")
-        self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "End Time")
+        self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
+        self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Start Time")
+        self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "End Time")
+        self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Cone Angle (deg)")
+        self.watchercatcher_modal.setHeaderData(7, Qt.Horizontal, "Cone Range (Km)")
+        self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "Interference Angle")
+        self.watchercatcher_modal.setHeaderData(9, Qt.Horizontal, "Min Angle")
 
         self.tableView.setModel(self.watchercatcher_modal)
         self.tableView.setEditTriggers(QAbstractItemView.EditTrigger().NoEditTriggers)
@@ -292,40 +291,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             rfi_data = list()
             rfi_data.append(data[-1])
-            for siteData in site[-int(data[0])].split(" "):
-                rfi_data.append(siteData)
+            for siteData in site[-int(data[0])].split(" ")[:3]: rfi_data.append(siteData)
             rfi_data.append(start_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
             rfi_data.append(end_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
+            for siteData in site[-int(data[0])].split(" ")[-3:]: rfi_data.append(siteData)
+            rfi_data.append(data[-2])
             rfi_list.append(rfi_data)
 
         return rfi_list
-
-    def show_rfi_results(self, result):
-        NUM_COL_WATCHERCATCHER = 9
+    
+    def show_rfi_results(self, rfi_list):
+        NUM_COL_WATCHERCATCHER = 10
         curr_row = 0
 
-        for curr_data in result:
+        for curr_data in rfi_list:
             curr_item = QStandardItem(1, NUM_COL_WATCHERCATCHER)
             self.watchercatcher_modal.insertRow(curr_row, curr_item)
             self.watchercatcher_modal.setHeaderData(
                 0, Qt.Horizontal, "Target Satellite"
             )
             self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
-            self.watchercatcher_modal.setHeaderData(
-                2, Qt.Horizontal, "Site Latitude (deg)"
-            )
-            self.watchercatcher_modal.setHeaderData(
-                3, Qt.Horizontal, "Site Longitude (deg)"
-            )
-            self.watchercatcher_modal.setHeaderData(
-                4, Qt.Horizontal, "Cone Angle (deg)"
-            )
-            self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "Cone Range (Km)")
-            self.watchercatcher_modal.setHeaderData(
-                6, Qt.Horizontal, "Interference Angle"
-            )
-            self.watchercatcher_modal.setHeaderData(7, Qt.Horizontal, "Start Time")
-            self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "End Time")
+            self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
+            self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
+            self.watchercatcher_modal.setHeaderData(4, Qt.Horizontal, "Start Time")
+            self.watchercatcher_modal.setHeaderData(5, Qt.Horizontal, "End Time")
+            self.watchercatcher_modal.setHeaderData(6, Qt.Horizontal, "Cone Angle (deg)")
+            self.watchercatcher_modal.setHeaderData(7, Qt.Horizontal, "Cone Range (Km)")
+            self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "Interference Angle")
+            self.watchercatcher_modal.setHeaderData(9, Qt.Horizontal, "Min Angle")
 
             target_satellite = self.watchercatcher_modal.index(curr_row, 0)
             site_name = self.watchercatcher_modal.index(curr_row, 1)
@@ -336,6 +329,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             interference_angle = self.watchercatcher_modal.index(curr_row, 6)
             start_time = self.watchercatcher_modal.index(curr_row, 7)
             end_time = self.watchercatcher_modal.index(curr_row, 8)
+            min_angle = self.watchercatcher_modal.index(curr_row, 9)
 
             self.watchercatcher_modal.setData(target_satellite, curr_data[0])
             self.watchercatcher_modal.setData(site_name, curr_data[1])
@@ -346,6 +340,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.watchercatcher_modal.setData(interference_angle, curr_data[6])
             self.watchercatcher_modal.setData(start_time, curr_data[7])
             self.watchercatcher_modal.setData(end_time, curr_data[8])
+            self.watchercatcher_modal.setData(min_angle, curr_data[9])
 
             self.map_row_index_to_watchercatcher[curr_row] = curr_data
             curr_row += 1

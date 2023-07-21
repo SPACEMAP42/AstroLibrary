@@ -7,4 +7,4 @@ dist
 bash.phs1
 build
 *.spec
-data
+/data
