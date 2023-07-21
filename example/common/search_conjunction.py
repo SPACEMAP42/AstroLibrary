@@ -9,13 +9,11 @@
 import astrolibrary
 from astrolibrary.data.constellation import Constellation
 
-example_access_token = (
-    "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
-)
+example_access_token = ""
 
 if __name__ == "__main__":
-    # create an astrolibrary client named ROK_airforce
-    ROK_airforce = astrolibrary.Client(example_access_token)
+    # create an astrolibrary client named SPACEMAP
+    SPACEMAP = astrolibrary.Client(example_access_token)
 
     """
     get conjunction api basically uses pagination technique.
@@ -29,7 +27,7 @@ if __name__ == "__main__":
         page (required): page to load conjunctions
             default value: 0
         
-        sort (required): sort the conjunctions by applying various criteria
+        sort (not required): sort the conjunctions by applying various criteria
             default value: tcaTime
             available values: tcaTime, dca
 
@@ -68,7 +66,7 @@ if __name__ == "__main__":
     """
 
     # call api with default parameters
-    result = ROK_airforce.conjunction_API.search_conjunctions()
+    result = SPACEMAP.conjunction_API.search_conjunctions()
     print(result)
 
     # <class 'astrolibrary.data.conjunction.Conjunction'>
@@ -79,19 +77,17 @@ if __name__ == "__main__":
     print(result.conjunctions[0].primary_id)  # success code
 
     # How to call an API with differenet parameters
-    result2 = ROK_airforce.conjunction_API.search_conjunctions(
-        limit=5, page=10, sort="dca"
-    )
+    result2 = SPACEMAP.conjunction_API.search_conjunctions(limit=5, page=10, sort="dca")
     print(result2)
 
     # How to search for a specific space object you want
-    result3 = ROK_airforce.conjunction_API.search_conjunctions(
+    result3 = SPACEMAP.conjunction_API.search_conjunctions(
         limit=10, sort="tcaTime", norad_id_or_name="starlink"
     )
     print(result3)
 
     # API to find a conjunction between a specific satellite and satellite constellation
-    result4 = ROK_airforce.conjunction_API.search_conjunctions_by_target_object(
+    result4 = SPACEMAP.conjunction_API.search_conjunctions_by_target_object(
         target_norad_id=39227, constellation=Constellation.STARLINK
     )
     print(result4)

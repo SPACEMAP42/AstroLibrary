@@ -1,0 +1,1 @@
+pyinstaller --add-data="../../astrolibrary;astrolibrary" --add-data="data;data" --add-data="config;config" --add-data="engine;engine" ./AstroRFI.py -y --clean

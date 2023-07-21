@@ -1,4 +1,6 @@
 import astrolibrary
+from astrolibrary.utils.graphic import visualizationtool
+from astrolibrary.utils.geometry import Point3D
 
 if __name__ == "__main__":
     spacemap = astrolibrary.Client(
@@ -7,7 +9,7 @@ if __name__ == "__main__":
     print(spacemap.tle_API.get_tle_by_norad_id_and_date(39227))
     # tles = spacemap.tle_API.get_recent_tles()
     tles = spacemap.tle_API.get_tle_by_norad_id_and_date(39227)
-    visualization_tool = astrolibrary.VisualizationTool()
+    visualization_tool = visualizationtool.VisualizationTool()
     visualization_tool.draw_earth()
     visualization_tool.draw_tles_at_moment(tles)
     visualization_tool.show()

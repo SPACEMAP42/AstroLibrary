@@ -9,25 +9,18 @@ class TLE:
         self.__title_line = tle_dict["name"]
         self.__first_line = tle_dict["firstLine"]
         self.__second_line = tle_dict["secondLine"]
-        self.__position_vector = None
-
-    def position_vector_at_moment(self, moment: datetime):
-        year = moment.year
-        month = moment.month
-        day = moment.day
-        hour = moment.hour
-        minute = moment.minute
-        second = moment.second
-        jd, fr = jday(year, month, day, hour, minute, second)
-        satrec = Satrec.twoline2rv(self.__first_line, self.__second_line)
-        e, r, v = satrec.sgp4(jd, fr)
-        r = np.array(r)
-        self.__position_vector = r
-        return r
 
     @property
-    def position_vetor(self):
-        return self.__position_vector
+    def title_line(self):
+        return self.__title_line
+
+    @property
+    def first_line(self):
+        return self.__first_line
+
+    @property
+    def second_line(self):
+        return self.__second_line
 
     def __repr__(self):
         return f"title_line: {self.__title_line}\nfirst_line: {self.__first_line}\nsecond_line: {self.__second_line}"
