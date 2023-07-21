@@ -2,6 +2,7 @@ from datetime import datetime
 from rfi_module import main
 
 from astrolibrary.data.tle import TLE
+from astrolibrary.data.rfi_time_interval import RfiTimeInterval
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -289,27 +290,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.__handle_error("파일의 형식이 올바르지 않습니다.")
                 return None
 
-            rfi_data = list()
-            rfi_data.append(data[-1])
-            for siteData in site[-int(data[0])].split(" ")[:3]: rfi_data.append(siteData)
-            rfi_data.append(start_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
-            rfi_data.append(end_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4])
-            for siteData in site[-int(data[0])].split(" ")[-3:]: rfi_data.append(siteData)
-            rfi_data.append(data[-2])
-            rfi_list.append(rfi_data)
+            rfi_dict = dict()
+            rfi_dict["targetSatellite"] = data[-1]
+            rfi_dict["siteName"] = site[-int(data[0])].split(" ")[0]
+            rfi_dict["siteLatitude"] = site[-int(data[0])].split(" ")[1]
+            rfi_dict["siteLongitude"] = site[-int(data[0])].split(" ")[2]
+            rfi_dict["startTime"] = start_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4]
+            rfi_dict["endTime"] = end_time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-4]
+            rfi_dict["coneAngle"] = site[-int(data[0])].split(" ")[3]
+            rfi_dict["coneRange"] = site[-int(data[0])].split(" ")[4]
+            rfi_dict["interferenceAngle"] = site[-int(data[0])].split(" ")[5]
+            rfi_dict["minAngle"] = data[-2]
+
+            rfi = RfiTimeInterval(rfi_dict)
+            rfi_list.append(rfi)
 
         return rfi_list
     
     def show_rfi_results(self, rfi_list):
         NUM_COL_WATCHERCATCHER = 10
-        curr_row = 0
 
-        for curr_data in rfi_list:
-            curr_item = QStandardItem(1, NUM_COL_WATCHERCATCHER)
-            self.watchercatcher_modal.insertRow(curr_row, curr_item)
-            self.watchercatcher_modal.setHeaderData(
-                0, Qt.Horizontal, "Target Satellite"
-            )
+        for idx, rfi in rfi_list:
+            item = QStandardItem(1, NUM_COL_WATCHERCATCHER)
+            self.watchercatcher_modal.insertRow(idx, item)
+            self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
             self.watchercatcher_modal.setHeaderData(1, Qt.Horizontal, "Site name")
             self.watchercatcher_modal.setHeaderData(2, Qt.Horizontal, "Site Latitude (deg)")
             self.watchercatcher_modal.setHeaderData(3, Qt.Horizontal, "Site Longitude (deg)")
@@ -320,30 +324,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.watchercatcher_modal.setHeaderData(8, Qt.Horizontal, "Interference Angle")
             self.watchercatcher_modal.setHeaderData(9, Qt.Horizontal, "Min Angle")
 
-            target_satellite = self.watchercatcher_modal.index(curr_row, 0)
-            site_name = self.watchercatcher_modal.index(curr_row, 1)
-            site_latitude = self.watchercatcher_modal.index(curr_row, 2)
-            site_longitude = self.watchercatcher_modal.index(curr_row, 3)
-            cone_angle = self.watchercatcher_modal.index(curr_row, 4)
-            cone_range = self.watchercatcher_modal.index(curr_row, 5)
-            interference_angle = self.watchercatcher_modal.index(curr_row, 6)
-            start_time = self.watchercatcher_modal.index(curr_row, 7)
-            end_time = self.watchercatcher_modal.index(curr_row, 8)
-            min_angle = self.watchercatcher_modal.index(curr_row, 9)
+            target_satellite = self.watchercatcher_modal.index(idx, 0)
+            site_name = self.watchercatcher_modal.index(idx, 1)
+            site_latitude = self.watchercatcher_modal.index(idx, 2)
+            site_longitude = self.watchercatcher_modal.index(idx, 3)
+            cone_angle = self.watchercatcher_modal.index(idx, 4)
+            cone_range = self.watchercatcher_modal.index(idx, 5)
+            interference_angle = self.watchercatcher_modal.index(idx, 6)
+            start_time = self.watchercatcher_modal.index(idx, 7)
+            end_time = self.watchercatcher_modal.index(idx, 8)
+            min_angle = self.watchercatcher_modal.index(idx, 9)
 
-            self.watchercatcher_modal.setData(target_satellite, curr_data[0])
-            self.watchercatcher_modal.setData(site_name, curr_data[1])
-            self.watchercatcher_modal.setData(site_latitude, curr_data[2])
-            self.watchercatcher_modal.setData(site_longitude, curr_data[3])
-            self.watchercatcher_modal.setData(cone_angle, curr_data[4])
-            self.watchercatcher_modal.setData(cone_range, curr_data[5])
-            self.watchercatcher_modal.setData(interference_angle, curr_data[6])
-            self.watchercatcher_modal.setData(start_time, curr_data[7])
-            self.watchercatcher_modal.setData(end_time, curr_data[8])
-            self.watchercatcher_modal.setData(min_angle, curr_data[9])
+            self.watchercatcher_modal.setData(target_satellite, rfi.target_satellite)
+            self.watchercatcher_modal.setData(site_name, rfi.site_name)
+            self.watchercatcher_modal.setData(site_latitude, rfi.site_latitude)
+            self.watchercatcher_modal.setData(site_longitude, rfi.site_longitude)
+            self.watchercatcher_modal.setData(cone_angle, rfi.cone_angle)
+            self.watchercatcher_modal.setData(cone_range, rfi.cone_range)
+            self.watchercatcher_modal.setData(interference_angle, rfi.interference_angle)
+            self.watchercatcher_modal.setData(start_time, rfi.start_time)
+            self.watchercatcher_modal.setData(end_time, rfi.end_time)
+            self.watchercatcher_modal.setData(min_angle, rfi.min_angle)
 
-            self.map_row_index_to_watchercatcher[curr_row] = curr_data
-            curr_row += 1
+            self.map_row_index_to_watchercatcher[idx] = rfi
 
     def loadDataToWatcherCatcher(self, file_path):
         tle_file_path = self.__get_recent_TLE_file_path(file_path)
