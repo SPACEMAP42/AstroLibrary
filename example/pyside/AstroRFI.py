@@ -308,6 +308,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return rfi_list
     
     def show_rfi_results(self, rfi_list):
+
+        if len(rfi_list) == 0:
+            self.space_objects = SpaceObjects([])
+            self.change_simulation_time()
+
+        self.watchercatcher_modal.removeRows(0, self.watchercatcher_modal.rowCount())
+        
         NUM_COL_WATCHERCATCHER = 10
 
         for idx, rfi in enumerate(rfi_list):
