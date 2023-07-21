@@ -310,7 +310,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def show_rfi_results(self, rfi_list):
         NUM_COL_WATCHERCATCHER = 10
 
-        for idx, rfi in rfi_list:
+        for idx, rfi in enumerate(rfi_list):
             item = QStandardItem(1, NUM_COL_WATCHERCATCHER)
             self.watchercatcher_modal.insertRow(idx, item)
             self.watchercatcher_modal.setHeaderData(0, Qt.Horizontal, "Target Satellite")
