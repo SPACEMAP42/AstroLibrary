@@ -4,6 +4,7 @@ import json
 class RfiTimeInterval:
     def __init__(self, rfi_dict):
         self.__target_satellite = rfi_dict["targetSatellite"]
+        self.__interferencing_satellite = rfi_dict["interferencingSatellite"]
         self.__site_name = rfi_dict["siteName"]
         self.__site_latitude = rfi_dict["siteLatitude"]
         self.__site_longitude = rfi_dict["siteLongitude"]
@@ -21,6 +22,14 @@ class RfiTimeInterval:
     @target_satellite.setter
     def target_satellite(self, new_target_satellite):
         self.__target_satellite = new_target_satellite
+
+    @property
+    def interferencing_satellite(self):
+        return self.__interferencing_satellite
+    
+    @interferencing_satellite.setter
+    def interferencing_satellite(self, new_interferencing_satellite):
+        self.__interferencing_satellite = new_interferencing_satellite
 
     @property
     def site_name(self):
