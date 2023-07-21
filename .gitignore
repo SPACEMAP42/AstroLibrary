@@ -8,3 +8,4 @@ bash.phs1
 build
 *.spec
 /data
+example/pyside/data
