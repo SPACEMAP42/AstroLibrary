@@ -4,4 +4,8 @@ __pycache__
 dist
 .whl
 .gz
-build.sh
+bash.phs1
+build
+*.spec
+/data
+example/pyside/data

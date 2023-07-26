@@ -1,5 +1,6 @@
 import astrolibrary
 from astrolibrary.utils.graphic import visualizationtool
+from astrolibrary.utils.geometry import Point3D
 
 if __name__ == "__main__":
     spacemap = astrolibrary.Client(
