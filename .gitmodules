@@ -1,8 +1,6 @@
-[submodule "example/tle2czml"]
-	path = example/tle2czml
-	url = https://github.com/Seunghwan17/tle2czml.git
-[submodule "tle2czml"]
-	path = tle2czml
+
+[submodule "thirdparty/tle2czml"]
+	path = thirdparty/tle2czml
 	url = https://github.com/Seunghwan17/tle2czml.git
 [submodule "thirdparty/czml3"]
 	path = thirdparty/czml3

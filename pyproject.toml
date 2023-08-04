@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "astrolibrary"
 description = "A set of APIs to analyze and predict space objects"
-version = "0.1.1"
+version = "0.1.4"
 packages = [ { include = "astrolibrary" } ]
 authors = ["spacemap Developers"]
 maintainers = ["spacemap <contact@spacemap42.com>"]
@@ -20,11 +20,9 @@ black = "^23.3.0"
 requests = "^2.28.2"
 configparser = "^5.3.0"
 matplotlib = "^3.7.1"
-sgp4 = "^2.21"
-numpy = "^1.24.2"
-pyside6 = "^6.5.0"
-pyproj = "^3.6.0"
 poetry = "^1.5.1"
+numpy = "^1.25.2"
+sgp4 = "^2.22"
 
 [tool.black]
 line-length = 88

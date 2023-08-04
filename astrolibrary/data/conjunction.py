@@ -1,3 +1,6 @@
+import json
+
+
 class Conjunction:
     def __init__(self, conjunction):
         self.__created_at = conjunction["createdAt"]
@@ -46,4 +49,4 @@ class Conjunction:
             "dca": self.__dca,
             "tca": self.__tca,
         }
-        return data.__repr__()
+        return json.dumps(data, indent=4)

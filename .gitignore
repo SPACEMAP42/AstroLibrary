@@ -10,3 +10,5 @@ build
 /data
 example/pyside/data
 *.txt
+poetry.lock
+```

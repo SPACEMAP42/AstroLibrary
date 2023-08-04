@@ -17,6 +17,38 @@ if __name__ == "__main__":
     # create an astrolibrary client named SPACEMAP
     SPACEMAP = astrolibrary.Client(example_access_token)
 
+    # call api with default parameters
+    conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(limit=10)
+    print(conjunction_assessment_data)
+
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    path = os.path.abspath(os.path.dirname(__file__))
+    file_path = f"{path}/conjunction_assessment_result_{now}.txt"
+    conjunction_assessment_data.write_file(file_path)
+
+    # # <class 'astrolibrary.data.conjunction.Conjunction'>
+    # print(type(result.conjunctions[0]))
+
+    # # An error occurs because conjunction result is not a dictionary type
+    # # print(result['conjunctions'][0]['p_id'])    # error code
+    # print(result.conjunctions[0].primary_id)  # success code
+
+    # # How to call an API with differenet parameters
+    # result2 = SPACEMAP.conjunction_API.search_conjunctions(limit=5, page=10, sort="dca")
+    # print(result2)
+
+    # # How to search for a specific space object you want
+    # result3 = SPACEMAP.conjunction_API.search_conjunctions(
+    #     limit=10, sort="tcaTime", norad_id_or_name="starlink"
+    # )
+    # print(result3)
+
+    # # API to find a conjunction between a specific satellite and satellite constellation
+    # result4 = SPACEMAP.conjunction_API.search_conjunctions_by_target_object(
+    #     target_norad_id=39227, constellation=Constellation.STARLINK
+    # )
+    # print(result4)
+
     """
     get conjunction api basically uses pagination technique.
 
@@ -66,37 +98,3 @@ if __name__ == "__main__":
         ]
     }
     """
-
-    # call api with default parameters
-    conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(
-        limit=5, page=0
-    )
-    print(conjunction_assessment_data)
-
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-    path = os.path.abspath(os.path.dirname(__file__))
-    with open(f"{path}/conjunction_assessment_result_{now}.txt", "w") as file:
-        file.write(conjunction_assessment_data.__repr__())
-
-    # # <class 'astrolibrary.data.conjunction.Conjunction'>
-    # print(type(result.conjunctions[0]))
-
-    # # An error occurs because conjunction result is not a dictionary type
-    # # print(result['conjunctions'][0]['p_id'])    # error code
-    # print(result.conjunctions[0].primary_id)  # success code
-
-    # # How to call an API with differenet parameters
-    # result2 = SPACEMAP.conjunction_API.search_conjunctions(limit=5, page=10, sort="dca")
-    # print(result2)
-
-    # # How to search for a specific space object you want
-    # result3 = SPACEMAP.conjunction_API.search_conjunctions(
-    #     limit=10, sort="tcaTime", norad_id_or_name="starlink"
-    # )
-    # print(result3)
-
-    # # API to find a conjunction between a specific satellite and satellite constellation
-    # result4 = SPACEMAP.conjunction_API.search_conjunctions_by_target_object(
-    #     target_norad_id=39227, constellation=Constellation.STARLINK
-    # )
-    # print(result4)
