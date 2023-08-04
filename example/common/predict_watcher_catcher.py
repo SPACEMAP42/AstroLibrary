@@ -5,10 +5,11 @@
 # Author: John Kim
 # Date: April 18, 2023
 
-
+import os
 import astrolibrary
+from datetime import datetime
 
-example_access_token = ""
+example_access_token = "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
 
 if __name__ == "__main__":
     # create an astrolibrary client named SPACEMAP
@@ -71,9 +72,10 @@ if __name__ == "__main__":
     }
     """
 
-    # 1. call api with default parameters
-    # send request to watcher catcher server
-    response = SPACEMAP.watcher_catcher_API.predict_watcher_catcher()
+    # # 1. call api with default parameters
+    # # send request to watcher catcher server
+    # response = SPACEMAP.watcher_catcher_API.predict_watcher_catcher()
+    # print(response)
 
     # # 2. list of statuses of requests sent to the watcher catcher server
     request_list = SPACEMAP.watcher_catcher_API.get_requests_status_list()["data"]
@@ -83,10 +85,17 @@ if __name__ == "__main__":
     # Save the database id, then read the value from that database
     # If you want to get the previous result rather than the last one, you can query the database.
     id = SPACEMAP.watcher_catcher_API.get_requests_status_list()["data"][-1]["_id"]
-    print(SPACEMAP.watcher_catcher_API.get_predicted_result(id))
+    watcher_catcher_data = SPACEMAP.watcher_catcher_API.get_predicted_result(id)
+    print(watcher_catcher_data)
 
-    # API to clear the id of a specific database from the list
-    SPACEMAP.watcher_catcher_API.delete_predicted_result(id)
+    # write into txt file
+    now = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+    path = os.path.abspath(os.path.dirname(__file__))
+    with open(f'{path}/watcher_catcher_result_{now}.txt', 'w') as file:
+        file.write(watcher_catcher_data.__repr__())
+
+    # # API to clear the id of a specific database from the list
+    # SPACEMAP.watcher_catcher_API.delete_predicted_result(id)
 
     # # A function that performs steps 1-3 above at once
-    print(SPACEMAP.watcher_catcher_API.predict_watcher_catcher_and_get_result())
+    # print(SPACEMAP.watcher_catcher_API.predict_watcher_catcher_and_get_result())

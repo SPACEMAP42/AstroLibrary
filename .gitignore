@@ -9,3 +9,4 @@ build
 *.spec
 /data
 example/pyside/data
+*.txt
