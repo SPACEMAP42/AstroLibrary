@@ -16,7 +16,7 @@ class ConjunctionAPI:
 
     def search_conjunctions(
         self,
-        limit: int = 2,
+        limit: int = 10,
         page: int = 0,
         sort: sort_type = sort_type.tcaTime,
         norad_id_or_name: str = None,

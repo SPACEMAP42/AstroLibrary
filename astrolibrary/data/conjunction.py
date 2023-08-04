@@ -7,7 +7,6 @@ class Conjunction:
         self.__secondary_name = conjunction["sName"]
         self.__dca = conjunction["dca"]
         self.__tca = conjunction["tcaTime"]
-        self.__probability = conjunction["probability"]
 
     @property
     def created_at(self):
@@ -37,10 +36,6 @@ class Conjunction:
     def tca(self):
         return self.__tca
 
-    @property
-    def probability(self):
-        return self.__probability
-
     def __repr__(self):
         data = {
             "created_at": self.__created_at,
@@ -50,6 +45,5 @@ class Conjunction:
             "secondary_name": self.__secondary_name,
             "dca": self.__dca,
             "tca": self.__tca,
-            "probability": self.__probability,
         }
-        return data
+        return data.__repr__()

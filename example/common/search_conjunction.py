@@ -68,12 +68,14 @@ if __name__ == "__main__":
     """
 
     # call api with default parameters
-    conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(limit=5, page=0)
+    conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(
+        limit=5, page=0
+    )
     print(conjunction_assessment_data)
 
-    now = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     path = os.path.abspath(os.path.dirname(__file__))
-    with open(f'{path}/conjunction_assessment_result_{now}.txt', 'w') as file:
+    with open(f"{path}/conjunction_assessment_result_{now}.txt", "w") as file:
         file.write(conjunction_assessment_data.__repr__())
 
     # # <class 'astrolibrary.data.conjunction.Conjunction'>
