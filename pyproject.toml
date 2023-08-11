@@ -16,10 +16,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
-black = "^23.3.0"
-requests = "^2.28.2"
+black = "^23.7.0"
+requests = "^2.31.0"
 configparser = "^5.3.0"
-matplotlib = "^3.7.1"
+matplotlib = "^3.7.2"
 poetry = "^1.5.1"
 numpy = "^1.25.2"
 sgp4 = "^2.22"
