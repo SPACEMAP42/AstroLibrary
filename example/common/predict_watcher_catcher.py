@@ -9,7 +9,7 @@ import os
 import astrolibrary
 from datetime import datetime
 
-example_access_token = "Y8HSpeoKt+10sYVL7pRJum2lBg8XFfWOu+LVyN0Y26+5l7EO3WXTbGipnlkgkmPi"
+example_access_token = "FLKHTmD7kQvowF+FYvIYtegO834kVdzgbAQxA2+YIe1ngSLkDNY6kWQnAog2z6s8"
 
 if __name__ == "__main__":
     # create an astrolibrary client named SPACEMAP
@@ -72,12 +72,12 @@ if __name__ == "__main__":
     }
     """
 
-    # # 1. call api with default parameters
-    # # send request to watcher catcher server
+    # 1. call api with default parameters
+    # send request to watcher catcher server
     # response = SPACEMAP.watcher_catcher_API.predict_watcher_catcher()
     # print(response)
 
-    # # 2. list of statuses of requests sent to the watcher catcher server
+    # 2. list of statuses of requests sent to the watcher catcher server
     request_list = SPACEMAP.watcher_catcher_API.get_requests_status_list()["data"]
     print(request_list)
 

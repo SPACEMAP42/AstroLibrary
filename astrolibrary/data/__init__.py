@@ -5,6 +5,7 @@ from .constellation import Constellation
 from .tle import TLE
 from .watcher_catcher import WatcherCatcher
 from .watching_time_interval import WatchingTimeInterval
+from .launch_conjunction import LaunchConjunction
 
 __all__ = [
     "Conjunction",
@@ -13,4 +14,5 @@ __all__ = [
     "TLE",
     "WatcherCatcher",
     "WatchingTimeInterval",
+    "LaunchConjunction",
 ]

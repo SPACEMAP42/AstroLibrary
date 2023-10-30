@@ -1,14 +1,14 @@
 class WatchingTimeInterval:
     def __init__(self, object):
-        self.__place_id = object["placeId"]
-        self.__primary_id = object["pId"]
-        self.__primary_name = "Apex"
-        self.__secondary_id = object["sId"]
-        self.__secondary_name = object["sName"]
-        self.__dca = object["dca"]
-        self.__tca = object["tcaTime"]
-        self.__start_time_of_time_interval = object["tcaStartTime"]
-        self.__end_time_of_time_interval = object["tcaEndTime"]
+        # self.__place_id = object['placeId']
+        self.__primary_id = object['pId']
+        self.__primary_name = object['pName']
+        self.__secondary_id = object['sId']
+        self.__secondary_name = object['sName']
+        self.__dca = object['dca']
+        self.__tca = object['tcaTime']
+        self.__start_time_of_time_interval = object['tcaStartTime']
+        self.__end_time_of_time_interval = object['tcaEndTime']
 
     # @property
     # def place_id(self):
@@ -48,11 +48,11 @@ class WatchingTimeInterval:
 
     def __repr__(self) -> str:
         data = {
-            "primary_id": self.__primary_id,
-            "primary_name": self.__primary_name,
-            "secondary_id": self.__secondary_id,
-            "secondary_name": self.__secondary_name,
-            "start_time_of_time_interval": self.__start_time_of_time_interval,
-            "end_time_of_time_interval": self.__end_time_of_time_interval,
+            'primary_id': self.__primary_id,
+            'primary_name': self.__primary_name,
+            'secondary_id': self.__secondary_id,
+            'secondary_name': self.__secondary_name,
+            'start_time_of_time_interval': self.__start_time_of_time_interval,
+            'end_time_of_time_interval': self.__end_time_of_time_interval,
         }
         return data

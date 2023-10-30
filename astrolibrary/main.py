@@ -4,6 +4,7 @@ from .apis.conjunction.api import ConjunctionAPI
 from .apis.token_auth.api import TokenAuthAPI
 from .apis.tle.api import TLEAPI
 from .apis.watcher_catcher.api import WatcherCatcherAPI
+from .apis.launch_conjunction.api import LaunchConjunctionAPI
 
 
 class Client:
@@ -23,3 +24,4 @@ class Client:
         self.conjunction_API = ConjunctionAPI(self.__base_url, self.__session)
         self.tle_API = TLEAPI(self.__base_url, self.__session)
         self.watcher_catcher_API = WatcherCatcherAPI(self.__base_url, self.__session)
+        self.launch_conjunction_API = LaunchConjunctionAPI(self.__base_url, self.__session)
