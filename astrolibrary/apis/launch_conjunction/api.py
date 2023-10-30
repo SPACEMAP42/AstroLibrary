@@ -41,7 +41,7 @@ class LaunchConjunctionAPI:
         return self.__response_to_launch_conjunction_object(response.json()["data"])
     
     def delete_predicted_result(self, id):
-        endpoint = f"/launch-conjunctionr/{id}"
+        endpoint = f"/launch-conjunction/{id}"
         url = self.__base_url + endpoint
         response = self.__session.delete(url)
         return response.json()
