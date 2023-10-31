@@ -1,11 +1,12 @@
 import json
 
-class LaunchConjunction:
+
+class PhantomConjunction:
     def __init__(self, response):
         self.__trajectory_path = response["trajectoryPath"]
         self.__downloaded_time_of_used_TLE = response["predictionEpochTime"]
         self.__trajectory_length = response["trajectoryLength"]
-        self.__launch_epoch_time = response["launchEpochTime"]
+        self.__phantom_epoch_time = response["launchEpochTime"]
         self.__threshold = response["threshold"]
         self.__watching_time_interval = response["lpdb"]
 
@@ -16,15 +17,15 @@ class LaunchConjunction:
     @property
     def downloaded_time_of_used_TLE(self):
         return self.__downloaded_time_of_used_TLE
-    
+
     @property
     def trajectory_length(self):
         return self.__trajectory_length
-    
+
     @property
-    def launch_epoch_time(self):
-        return self.__launch_epoch_time
-    
+    def phantom_epoch_time(self):
+        return self.__phantom_epoch_time
+
     @property
     def threshold(self):
         return self.__threshold
@@ -32,7 +33,7 @@ class LaunchConjunction:
     @property
     def watching_time_interval(self):
         return self.__watching_time_interval
-    
+
     def __repr__(self) -> str:
         data = {
             "trajectoryPath": self.__trajectory_path,

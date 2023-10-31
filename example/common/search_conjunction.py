@@ -21,10 +21,6 @@ if __name__ == "__main__":
     conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(limit=10)
     print(conjunction_assessment_data)
 
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-    path = os.path.abspath(os.path.dirname(__file__))
-    file_path = f"{path}/conjunction_assessment_result_{now}.txt"
-    conjunction_assessment_data.write_file(file_path)
 
     # # <class 'astrolibrary.data.conjunction.Conjunction'>
     # print(type(result.conjunctions[0]))
@@ -48,6 +44,12 @@ if __name__ == "__main__":
     #     target_norad_id=39227, constellation=Constellation.STARLINK
     # )
     # print(result4)
+
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    path = os.path.abspath(os.path.dirname(__file__))
+    file_path = f"{path}/conjunction_assessment_result_{now}.txt"
+    conjunction_assessment_data.write_file(file_path)
+
 
     """
     get conjunction api basically uses pagination technique.
