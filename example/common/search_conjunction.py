@@ -1,56 +1,50 @@
-# The Korean Society for Aeronautical & Space sciences
-# 2023 Spring Conference April 19 (Wed) ~ April 21 (Fri)
-# An example code using the conjunction API of the astrolibrary version 0.1.1.
+# An example code using the conjunction API of the astrolibrary version 0.1.5.
 # This code retrieves conjunction data and prints them out.
-# Author: John Kim
-# Date: April 17, 2023
+# Author: John Kim, Shawn Choi
+# Date: November 1, 2023
 
-
+# Step 1: Include the system library and AstroLibrary
+from datetime import datetime
 import os
 import astrolibrary
-from datetime import datetime
 from astrolibrary.data.constellation import Constellation
 
-example_access_token = ""
+EXAMPLE_ACCESS_TOKEN = ""
 
 if __name__ == "__main__":
-    # create an astrolibrary client named SPACEMAP
-    SPACEMAP = astrolibrary.Client(example_access_token)
+    # Step 2: Create an astrolibrary client named SPACEMAP
+    SPACEMAP = astrolibrary.Client(EXAMPLE_ACCESS_TOKEN)
 
-    # call api with default parameters
-    conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(limit=10)
-    print(conjunction_assessment_data)
+    # Step 3-A: Search Top-10 of all-on-all CA results sorted by DCA
+    conjunction_assessment_data_sorted_by_dca = (
+        SPACEMAP.conjunction_API.search_conjunctions(limit=10, sort="dca")
+    )
 
+    # Step 3-B: Search Top-5 of “KOMPSAT 5” CA results sorted by TCA
+    kompsat_5_conjunction_assessment_data = (
+        SPACEMAP.conjunction_API.search_conjunctions(
+            limit=5, sort="tca", sat_name="KOMPSAT 5"
+        )
+    )
 
-    # # <class 'astrolibrary.data.conjunction.Conjunction'>
-    # print(type(result.conjunctions[0]))
+    # Step 3-C: Search Top-5 of “25544” (ISS) CA results sorted by TCA
+    iss_conjunction_assessment_data = SPACEMAP.conjunction_API.search_conjunctions(
+        limit=5, sort="tca", norad_id="25544"
+    )
 
-    # # An error occurs because conjunction result is not a dictionary type
-    # # print(result['conjunctions'][0]['p_id'])    # error code
-    # print(result.conjunctions[0].primary_id)  # success code
+    # Step 3-D: Call API with different parameters (Top-10 of "STARLINK" constellation CA results sorted by DCA)
+    starlink_conjunction_assessment_data = (
+        SPACEMAP.conjunction_API.search_conjunctions_for_constellation(
+            limit=10, sort="dca", constellation=Constellation.STARLINK
+        )
+    )
 
-    # # How to call an API with differenet parameters
-    # result2 = SPACEMAP.conjunction_API.search_conjunctions(limit=5, page=10, sort="dca")
-    # print(result2)
-
-    # # How to search for a specific space object you want
-    # result3 = SPACEMAP.conjunction_API.search_conjunctions(
-    #     limit=10, sort="tcaTime", norad_id_or_name="starlink"
-    # )
-    # print(result3)
-
-    # # API to find a conjunction between a specific satellite and satellite constellation
-    # result4 = SPACEMAP.conjunction_API.search_conjunctions_by_target_object(
-    #     target_norad_id=39227, constellation=Constellation.STARLINK
-    # )
-    # print(result4)
-
+    # Step 4: Write the CA data of STARLINK  to a file
     now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     path = os.path.abspath(os.path.dirname(__file__))
     file_path = f"{path}/conjunction_assessment_result_{now}.txt"
-    conjunction_assessment_data.write_file(file_path)
-
-
+    starlink_conjunction_assessment_data.write_file(file_path)
+    
     """
     get conjunction api basically uses pagination technique.
 

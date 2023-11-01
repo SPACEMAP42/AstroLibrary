@@ -11,7 +11,7 @@ class ConjunctionAPI:
         self.__session = session
 
     class sort_type(Enum):
-        tcaTime = "tcaTime"
+        tcaTime = "tca"
         dca = "dca"
 
     def search_conjunctions(
@@ -19,8 +19,11 @@ class ConjunctionAPI:
         limit: int = 10,
         page: int = 0,
         sort: sort_type = sort_type.tcaTime,
-        norad_id_or_name: str = None,
+        sat_name: str = None,
+        norad_id: str = None,
+        # norad_id_or_name: str = None,
     ):
+        norad_id_or_name = norad_id or sat_name
         endpoint = "/ppdb/conjunctions"
         url = self.__base_url + endpoint
         params = {
@@ -31,6 +34,17 @@ class ConjunctionAPI:
         }
         response = self.__session.get(url, params=params)
         return self.__dict_to_conjunction_object(response.json()["data"])
+
+    def search_conjunctions_for_constellation(
+        self,
+        limit: int = None,
+        page: int = None,
+        sort: sort_type = sort_type.tcaTime,
+        constellation: Constellation = None,
+    ):
+        return self.search_conjunctions(
+            limit, page, sort, sat_name=Constellation(constellation).name
+        )
 
     def search_conjunctions_by_target_object(
         self,
