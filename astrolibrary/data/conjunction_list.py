@@ -17,7 +17,7 @@ class ConjunctionList:
     def conjunctions(self, conjunctions) -> None:
         self.__conjunctions = conjunctions
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         data = {
             "conjunctions": [
                 conjunction.__repr__() for conjunction in self.__conjunctions

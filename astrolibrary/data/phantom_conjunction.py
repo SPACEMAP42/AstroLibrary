@@ -39,7 +39,7 @@ class PhantomConjunction:
             "trajectoryPath": self.__trajectory_path,
             "predictionEpochTime": self.__downloaded_time_of_used_TLE,
             "trajectoryLength": self.__trajectory_length,
-            "launchEpochTime": self.__launch_epoch_time,
+            "phantomEpochTime": self.__phantom_epoch_time,
             "threshold": self.__threshold,
             "lpdb": [
                 watching_time_interval.__repr__()
