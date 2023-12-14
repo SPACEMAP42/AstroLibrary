@@ -19,7 +19,7 @@ if __name__ == "__main__":
     conjunction_assessment_data_sorted_by_dca = (
         SPACEMAP.conjunction_API.search_conjunctions(limit=10, sort="dca")
     )
-
+    print(conjunction_assessment_data_sorted_by_dca)
     # Step 3-B: Search Top-5 of “KOMPSAT 5” CA results sorted by TCA
     kompsat_5_conjunction_assessment_data = (
         SPACEMAP.conjunction_API.search_conjunctions(
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     path = os.path.abspath(os.path.dirname(__file__))
     file_path = f"{path}/conjunction_assessment_result_{now}.txt"
     starlink_conjunction_assessment_data.write_file(file_path)
-    
+
     """
     get conjunction api basically uses pagination technique.
 
@@ -52,20 +52,23 @@ if __name__ == "__main__":
     Parameters
     ----------
         limit (required): limit the number of conjunctions shown on the page
-            default value: 2
+            default value: 10
 
-        page (required): page to load conjunctions
+        page (required): page to load conjunctions of pagination
             default value: 0
         
         sort (not required): sort the conjunctions by applying various criteria
-            default value: tcaTime
-            available values: tcaTime, dca
+            default value: tca
+            available values: tca, dca
 
-        satellite (not required): search for conjunctions using NORAD ID or TLE objects names
-            example value: 39227 (NORAD ID), KOMSAT 5 (object name)
+        sat_name (not required): search for conjunctions using objects names
+            example value: 39227 (NORAD ID)
+
+        norad_id (not required): search for conjunctions using NORAD ID
+            example value: 39227 (NORAD ID)
 
             
-    Example result
+    Outputs
     --------------
     {
         "total_count": 239129,
