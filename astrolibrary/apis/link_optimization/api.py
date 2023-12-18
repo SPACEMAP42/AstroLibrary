@@ -48,6 +48,12 @@ class LinkOptimizationAPI:
         response = self.__session.get(url)
         return response.json()
     
+    def read_link_optimization_window(self):
+        endpoint = "/link-optimization-window"
+        url = self.__base_url + endpoint
+        response = self.__session.get(url)
+        return response.json()
+    
     def find_link_optimization(self, id) -> LinkOptimization:
         endpoint = f"/link-optimization/{id}"
         url = self.__base_url + endpoint
