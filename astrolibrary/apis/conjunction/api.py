@@ -34,6 +34,13 @@ class ConjunctionAPI:
         }
         response = self.__session.get(url, params=params)
         return self.__dict_to_conjunction_object(response.json()["data"])
+    
+    def read_prediction_window(self):
+        endpoint = "/prediction-window"
+        url = self.__base_url + endpoint
+        response = self.__session.get(url)
+        return response.json()
+    
 
     def search_conjunctions_for_constellation(
         self,

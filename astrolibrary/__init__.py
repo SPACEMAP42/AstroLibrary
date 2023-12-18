@@ -8,7 +8,10 @@ from .data.watcher_catcher import WatcherCatcher
 from .data.constellation import Constellation
 from .data.tle import TLE
 from .data.phantom_conjunction import PhantomConjunction
-from .utils import *
+# from .utils import *
+
+from .apis.link_optimization.api import LinkOptimizationAPI
+from .data.link_optimization_db import LinkOptimizationDB
 
 
 __all__ = [
@@ -22,4 +25,6 @@ __all__ = [
     "TLE",
     "Constellation",
     "PhantomConjunction",
+    "LinkOptimizationDB",
+    "LinkOptimizationAPI",
 ]
