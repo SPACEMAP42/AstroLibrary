@@ -5,7 +5,7 @@ from .apis.tle.api import TLEAPI
 from .apis.watcher_catcher.api import WatcherCatcherAPI
 from .apis.phantom_conjunction.api import PhantomConjunctionAPI
 from .apis.link_optimization.api import LinkOptimizationAPI
-
+from .apis.window.api import WindowAPI
 
 class Client:
     def __init__(self, token):
@@ -25,3 +25,4 @@ class Client:
         self.watcher_catcher_API = WatcherCatcherAPI(self.__base_url, self.__session)
         self.phantom_conjunction_API = PhantomConjunctionAPI(self.__base_url, self.__session)
         self.link_optimization_API = LinkOptimizationAPI(self.__base_url, self.__session)
+        self.window_API = WindowAPI(self.__base_url, self.__session)

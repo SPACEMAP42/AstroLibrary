@@ -1,7 +1,8 @@
 import astrolibrary
-import datetime, os
+from datetime import datetime
+import os
 
-example_access_token = ""
+example_access_token = "FLKHTmD7kQvowF+FYvIYtegO834kVdzgbAQxA2+YIe1ngSLkDNY6kWQnAog2z6s8"
 
 if __name__ == "__main__":
     spacemap = astrolibrary.Client(example_access_token)
@@ -18,12 +19,12 @@ if __name__ == "__main__":
     """
 
     # read prediction window
-    prediction_window = spacemap.conjunction_API.read_prediction_window()
+    prediction_window = spacemap.window_API.read_prediction_window()
     print(prediction_window)
 
     # read link optimization window
     link_optimization_window = (
-        spacemap.link_optimization_API.read_link_optimization_window()
+        spacemap.window_API.read_link_optimization_window()
     )
     print(link_optimization_window)
 

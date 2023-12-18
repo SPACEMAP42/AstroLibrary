@@ -12,7 +12,7 @@ from .utils import *
 
 from .apis.link_optimization.api import LinkOptimizationAPI
 from .data.link_optimization_db import LinkOptimizationDB
-
+from .apis.window.api import WindowAPI
 
 __all__ = [
     "Client",
@@ -27,4 +27,5 @@ __all__ = [
     "PhantomConjunction",
     "LinkOptimizationDB",
     "LinkOptimizationAPI",
+    "WindowAPI",
 ]
