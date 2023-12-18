@@ -18,9 +18,4 @@ class ConjunctionList:
         self.__conjunctions = conjunctions
 
     def __repr__(self):
-        data = {
-            "conjunctions": [
-                conjunction.__repr__() for conjunction in self.__conjunctions
-            ],
-        }
-        return json.dumps(data, indent=4)
+        return f"{self.__conjunctions}"
