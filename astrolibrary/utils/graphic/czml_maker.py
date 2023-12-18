@@ -36,7 +36,8 @@ class CzmlMaker:
 
         for i, json_datum in enumerate(json_data):
             if "clock" in json_datum:
-                json_datum["clock"]["range"] = "UNBOUNDED"
+                json_datum["clock"]["multiplier"] = 5
+                json_datum["clock"]["range"] = "LOOP_STOP"
             if "billboard" in json_datum:
                 json_datum.pop("billboard", None)
 
