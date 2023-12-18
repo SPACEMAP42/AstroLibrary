@@ -9,7 +9,7 @@ import os
 import astrolibrary
 from datetime import datetime
 
-example_access_token = "FLKHTmD7kQvowF+FYvIYtegO834kVdzgbAQxA2+YIe1ngSLkDNY6kWQnAog2z6s8"
+example_access_token = ""
 
 if __name__ == "__main__":
     # create an astrolibrary client named SPACEMAP
@@ -89,9 +89,9 @@ if __name__ == "__main__":
     print(watcher_catcher_data)
 
     # write into txt file
-    now = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     path = os.path.abspath(os.path.dirname(__file__))
-    with open(f'{path}/watcher_catcher_result_{now}.txt', 'w') as file:
+    with open(f"{path}/watcher_catcher_result_{now}.txt", "w") as file:
         file.write(watcher_catcher_data.__repr__())
 
     # # API to clear the id of a specific database from the list
