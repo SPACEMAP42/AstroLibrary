@@ -11,4 +11,6 @@ build
 example/pyside/data
 *.txt
 astrolibrary.*
+*.czml
+*.tle
 ```
