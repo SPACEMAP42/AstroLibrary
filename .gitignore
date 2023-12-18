@@ -13,4 +13,5 @@ example/pyside/data
 astrolibrary.*
 *.czml
 *.tle
+py311/
 ```
