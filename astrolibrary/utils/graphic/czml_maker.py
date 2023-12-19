@@ -14,7 +14,9 @@ class CzmlMaker:
     def __init__(self):
         pass
 
+    @classmethod
     def czml_prettier(
+        cls,
         czml_path,
         draw_label=False,
         draw_path=False,
@@ -365,6 +367,72 @@ class CzmlMaker:
             czml.append(pair_packet)
 
         return czml
+
+    @classmethod
+    def set_current_time(cls, czml, current_time):
+        for i, packet in enumerate(czml):
+            if "clock" in packet:
+                packet["clock"]["currentTime"] = current_time
+        return czml
+
+    @classmethod
+    def make_conjunction_packet(cls, conjunction):
+        primary_id = conjunction.primary_id
+        secondary_id = conjunction.secondary_id
+
+        rgba_before = [255, 0, 0, 255]
+        rgba_intersected = [255, 0, 0, 255]
+        rgba_after = [0, 0, 255, 255]
+
+        entering_time, tca, leaving_time = (
+            conjunction.entering_time,
+            conjunction.tca,
+            conjunction.leaving_time,
+        )
+        # remove last word
+        # entering_time = entering_time[:-1]
+        # tca = tca[:-1]
+        # leaving_time = leaving_time[:-1]
+        color_set = []
+        color_set.append(
+            {
+                "interval": f"{entering_time}/{tca}",
+                "rgba": rgba_before,
+            },
+        )
+        color_set.append(
+            {
+                "interval": f"{tca}/{leaving_time}",
+                "rgba": rgba_after,
+            },
+        )
+        pair_packet = {
+            "id": f"{primary_id}/{secondary_id}",
+            "name": f"{primary_id} to {secondary_id}",
+            "availability": f"{entering_time}/{leaving_time}",
+            "polyline": {
+                "show": True,
+                "width": 3,
+                "material": {
+                    "polylineOutline": {
+                        "color": color_set,
+                        "outlineColor": {
+                            "rgba": [255, 255, 255, 255],
+                        },
+                        "outlineWidth": 1,
+                    },
+                },
+                "arcType": "NONE",
+                "positions": {
+                    "references": [
+                        f"{primary_id}#position",
+                        f"{secondary_id}#position",
+                    ],
+                },
+            },
+        }
+
+        return pair_packet
 
     def rgba_reverse(rgba):
         opposite_rgba = []

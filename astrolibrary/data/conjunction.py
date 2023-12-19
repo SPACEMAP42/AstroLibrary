@@ -10,6 +10,8 @@ class Conjunction:
         self.__secondary_name = conjunction["sName"]
         self.__dca = conjunction["dca"]
         self.__tca = conjunction["tcaTime"]
+        self.__entering_time = conjunction["tcaStartTime"]
+        self.__leaving_time = conjunction["tcaEndTime"]
 
     @property
     def created_at(self):
@@ -39,6 +41,14 @@ class Conjunction:
     def tca(self):
         return self.__tca
 
+    @property
+    def entering_time(self):
+        return self.__entering_time
+
+    @property
+    def leaving_time(self):
+        return self.__leaving_time
+
     def __repr__(self):
         data = {
             "created_at": self.__created_at,
@@ -48,5 +58,7 @@ class Conjunction:
             "secondary_name": self.__secondary_name,
             "dca": self.__dca,
             "tca": self.__tca,
+            "entering_time": self.__entering_time,
+            "leaving_time": self.__leaving_time,
         }
         return json.dumps(data, indent=4)
