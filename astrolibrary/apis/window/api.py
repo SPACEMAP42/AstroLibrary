@@ -7,10 +7,10 @@ class WindowAPI:
         endpoint = "/prediction-window"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
-        return response.json()
-    
+        return response.json()["data"]
+
     def read_link_optimization_window(self):
         endpoint = "/link-optimization-window"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
-        return response.json()
+        return response.json()["data"]

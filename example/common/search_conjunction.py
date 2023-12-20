@@ -75,7 +75,7 @@ if __name__ == "__main__":
         "current_count": 2,
         "conjunctions": [
             {
-                "created_at": "2023-04-19T12:00:00.000Z",
+                "downloaded_time_of_used_TLE": "2023-04-19T12:00:00.000Z",
                 "primary_id": 53683,
                 "primary_name": "STARLINK-4625",
                 "secondary_id": 47187,
@@ -85,7 +85,7 @@ if __name__ == "__main__":
                 "probability": "N/A"
             },
             {
-                "created_at": "2023-04-19T12:00:00.000Z",
+                "downloaded_time_of_used_TLE": "2023-04-19T12:00:00.000Z",
                 "primary_id": 55355,
                 "primary_name": "STARLINK-5647",
                 "secondary_id": 47840,

@@ -3,7 +3,7 @@ import json
 
 class Conjunction:
     def __init__(self, conjunction):
-        self.__created_at = conjunction["createdAt"]
+        self.__downloaded_time_of_used_TLE = conjunction["createdAt"]
         self.__primary_id = conjunction["pId"]
         self.__primary_name = conjunction["pName"]
         self.__secondary_id = conjunction["sId"]
@@ -14,8 +14,8 @@ class Conjunction:
         self.__leaving_time = conjunction["tcaEndTime"]
 
     @property
-    def created_at(self):
-        return self.__created_at
+    def downloaded_time_of_used_TLE(self):
+        return self.__downloaded_time_of_used_TLE
 
     @property
     def primary_id(self):
@@ -51,7 +51,7 @@ class Conjunction:
 
     def __repr__(self):
         data = {
-            "created_at": self.__created_at,
+            "downloaded_time_of_used_TLE": self.__downloaded_time_of_used_TLE,
             "primary_id": self.__primary_id,
             "primary_name": self.__primary_name,
             "secondary_id": self.__secondary_id,

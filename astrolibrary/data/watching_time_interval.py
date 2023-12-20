@@ -55,4 +55,4 @@ class WatchingTimeInterval:
             'start_time_of_time_interval': self.__start_time_of_time_interval,
             'end_time_of_time_interval': self.__end_time_of_time_interval,
         }
-        return data
+        return str(data)

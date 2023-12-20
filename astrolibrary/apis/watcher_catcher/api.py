@@ -42,30 +42,34 @@ class WatcherCatcherAPI:
         response = self.__session.post(url, data=payload)
         return response.json()
 
-    def get_requests_status_list(self):
+    def read_watcher_catcher_status_list(self):
         endpoint = "/watcher-catcher"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
         return response.json()
 
-    def get_predicted_result(self, id) -> WatcherCatcher:
+    def find_watcher_catcher_result_by_id(self, id) -> WatcherCatcher:
         endpoint = f"/watcher-catcher/{id}"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
+        number_of_attempts = 0
         while response.json()["statusCode"] == 400:
+            number_of_attempts += 1
             time.sleep(5)
             response = self.__session.get(url)
+            if number_of_attempts >= 10:
+                return None
         # return response.json()["data"]
         return self.__response_to_watcher_catcher_object(response.json()["data"])
 
-    def delete_predicted_result(self, id):
+    def delete_watcher_catcher_result_by_id(self, id):
         endpoint = f"/watcher-catcher/{id}"
         url = self.__base_url + endpoint
         response = self.__session.delete(url)
         return response.json()
 
     # def delete_entire_predicted_results(self) -> None:
-    #     results = self.get_requests_status_list()['data']
+    #     results = self.read_watcher_catcher_status_list()['data']
     #     for result in results:
     #         id = result['_id']
     #         self.delete_predicted_result(id)
@@ -95,5 +99,5 @@ class WatcherCatcherAPI:
             start_time_of_timeline,
             end_time_of_timeline,
         )
-        id = self.get_requests_status_list()["data"][-1]["_id"]
-        return self.get_predicted_result(id)
+        id = self.read_watcher_catcher_status_list()["data"][-1]["_id"]
+        return self.find_watcher_catcher_result_by_id(id)
