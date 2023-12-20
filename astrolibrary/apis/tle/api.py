@@ -32,6 +32,16 @@ class TLEAPI:
         response = self.__session.get(url, params=params)
         return self.__tle_dict_to_tle_objects(response.json()["data"]["tles"])
 
+    def get_tle_by_date(self, date: datetime = datetime.now()) -> List[TLE]:
+        year = date.year
+        month = date.month
+        day = date.day
+        hour = date.hour
+        endpoint = f"/tles/{year}/{month}/{day}/{hour}"
+        url = self.__base_url + endpoint
+        response = self.__session.get(url)
+        return self.__tle_dict_to_tle_objects(response.json()["data"]["tles"])
+
     def __tle_dict_to_tle_objects(self, tle_dict) -> List[TLE]:
         tles: List[TLE] = list()
         for curr_tle_dict in tle_dict:

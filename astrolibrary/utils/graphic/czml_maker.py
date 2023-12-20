@@ -463,14 +463,24 @@ class CzmlMaker:
 
     @classmethod
     def make_pair_packet(
-        cls, primary_id, secondary_id, start_time, end_time, rgba=[0, 255, 0, 255]
+        cls,
+        primary_id,
+        secondary_id,
+        start_time,
+        end_time,
+        creation_number=None,
+        rgba=[0, 255, 0, 255],
     ):
         rgba_before = [255, 0, 0, 255]
         rgba_intersected = [255, 0, 0, 255]
         rgba_after = [0, 0, 255, 255]
 
+        if creation_number == None:
+            packet_id = f"{primary_id}/{secondary_id}"
+        else:
+            packet_id = f"{primary_id}/{secondary_id}_{creation_number}"
         pair_packet = {
-            "id": f"{primary_id}/{secondary_id}",
+            "id": packet_id,
             "name": f"{primary_id} to {secondary_id}",
             "availability": f"{start_time}/{end_time}",
             "polyline": {

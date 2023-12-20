@@ -49,7 +49,7 @@ class WatcherCatcher:
     def watching_time_interval(self):
         return self.__watching_time_interval
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         data = {
             "id": self.__id,
             "apex_latitude": self.__apex_latitude,

@@ -34,7 +34,7 @@ if __name__ == "__main__":
             default value: 40 (deg)
 
         start_time_of_timeline: time to start exploring the space objects
-            default value: current timexw
+            default value: current time
 
         end_time_of_timeline: time to end object search
             default value: 1 hour from current time
