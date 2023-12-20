@@ -34,7 +34,7 @@ if __name__ == "__main__":
             default value: 40 (deg)
 
         start_time_of_timeline: time to start exploring the space objects
-            default value: current timexw
+            default value: current time
 
         end_time_of_timeline: time to end object search
             default value: 1 hour from current time
@@ -78,14 +78,20 @@ if __name__ == "__main__":
     # print(response)
 
     # 2. list of statuses of requests sent to the watcher catcher server
-    request_list = SPACEMAP.watcher_catcher_API.get_requests_status_list()["data"]
+    request_list = SPACEMAP.watcher_catcher_API.read_watcher_catcher_status_list()[
+        "data"
+    ]
     print(request_list)
 
     # 3. Select a very last request from the list and read data
     # Save the database id, then read the value from that database
     # If you want to get the previous result rather than the last one, you can query the database.
-    id = SPACEMAP.watcher_catcher_API.get_requests_status_list()["data"][-1]["_id"]
-    watcher_catcher_data = SPACEMAP.watcher_catcher_API.get_predicted_result(id)
+    id = SPACEMAP.watcher_catcher_API.read_watcher_catcher_status_list()["data"][-1][
+        "_id"
+    ]
+    watcher_catcher_data = (
+        SPACEMAP.watcher_catcher_API.find_watcher_catcher_result_by_id(id)
+    )
     print(watcher_catcher_data)
 
     # write into txt file

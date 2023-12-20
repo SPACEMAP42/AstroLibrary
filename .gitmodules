@@ -1,6 +1,6 @@
 [submodule "czml3"]
 	path = thirdparty/czml3
-	url = git@github.com:Seunghwan17/czml3.git
+	url = https://github.com/Seunghwan17/czml3.git
 [submodule "tle2czml"]
 	path = thirdparty/tle2czml
-	url = git@github.com:Seunghwan17/tle2czml.git
+	url = https://github.com/Seunghwan17/tle2czml.git

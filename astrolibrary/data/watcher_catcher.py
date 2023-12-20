@@ -10,8 +10,8 @@ class WatcherCatcher:
         self.__cone_field_of_view = response["fieldOfView"]
         self.__start_time_of_timeline = response["wcEpochTime"]
         self.__end_time_of_timeline = response["wcEndTime"]
-        self.__downloaded_time_of_used_TLE = response["predictionEpochTime"]
         self.__watching_time_interval = response["wcdb"]
+        self.__downloaded_time_of_used_TLE = response["predictionEpochTime"]
 
     @property
     def id(self):
@@ -49,7 +49,7 @@ class WatcherCatcher:
     def watching_time_interval(self):
         return self.__watching_time_interval
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         data = {
             "id": self.__id,
             "apex_latitude": self.__apex_latitude,

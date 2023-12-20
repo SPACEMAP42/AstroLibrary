@@ -4,6 +4,7 @@ from typing import List
 from astrolibrary.data.link_optimization import LinkOptimization
 from astrolibrary.data.link_optimization_db import LinkOptimizationDB
 
+
 class LinkOptimizationAPI:
     def __init__(self, base_url, session):
         self.__base_url = base_url
@@ -23,11 +24,13 @@ class LinkOptimizationAPI:
     ):
         if lo_epoch_time == None:
             lo_epoch_time = self.__get_current_time()
-            lo_epoch_time = lo_epoch_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '+00:00'
+            lo_epoch_time = (
+                lo_epoch_time.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "+00:00"
+            )
         if lo_end_time == None:
             lo_end_time = self.__get_current_time() + datetime.timedelta(hours=1)
-            lo_end_time = lo_end_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '+00:00'
-            
+            lo_end_time = lo_end_time.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "+00:00"
+
         endpoint = "/link-optimization"
         url = self.__base_url + endpoint
         payload = {
@@ -38,27 +41,27 @@ class LinkOptimizationAPI:
             "loEpochTime": lo_epoch_time,
             "loEndTime": lo_end_time,
         }
-        print(payload)
+        # print(payload)
         response = self.__session.post(url, data=payload)
         return response.json()
-    
-    def read_link_optimization(self):
+
+    def read_link_optimization_status_list(self):
         endpoint = "/link-optimization"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
         return response.json()
-    
-    def find_link_optimization(self, id) -> LinkOptimization:
-        endpoint = f"/link-optimization/{id}"
+
+    def find_link_optimization_result_by_id(self, placed_id) -> LinkOptimization:
+        endpoint = f"/link-optimization/{placed_id}"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
         while response.json()["statusCode"] == 400:
             time.sleep(5)
             response = self.__session.get(url)
         return self.__response_to_link_optimization_class(response.json()["data"])
-    
-    def delete_predicted_result(self, id):
-        endpoint = f"/link-optimization/{id}"
+
+    def delete_link_optimization_result_by_id(self, placed_id):
+        endpoint = f"/link-optimization/{placed_id}"
         url = self.__base_url + endpoint
         response = self.__session.delete(url)
         return response.json()
@@ -71,7 +74,7 @@ class LinkOptimizationAPI:
             lodb_list.append(lodb)
         response["lodb"] = lodb_list
         return LinkOptimization(response)
-    
+
     def predict_link_optimization_and_get_result(
         self,
         source_latitude: float = 37.4562557,
@@ -83,10 +86,12 @@ class LinkOptimizationAPI:
     ):
         if lo_epoch_time == None:
             lo_epoch_time = self.__get_current_time()
-            lo_epoch_time = lo_epoch_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '+00:00'
+            lo_epoch_time = (
+                lo_epoch_time.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "+00:00"
+            )
         if lo_end_time == None:
             lo_end_time = self.__get_current_time() + datetime.timedelta(hours=1)
-            lo_end_time = lo_end_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + '+00:00'
+            lo_end_time = lo_end_time.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "+00:00"
 
         self.predict_link_optimization(
             source_latitude,

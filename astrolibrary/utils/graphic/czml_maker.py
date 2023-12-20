@@ -14,7 +14,22 @@ class CzmlMaker:
     def __init__(self):
         pass
 
+    @classmethod
+    def __convert_lat_lon_to_ecef(cls, latitude, longitude):
+        import pyproj
+
+        # WGS84 좌표계와 ECEF 좌표계 간의 변환을 위한 프로젝션 생성
+        wgs84 = pyproj.Proj(proj="latlong", datum="WGS84", ellps="WGS84")
+        ecef = pyproj.Proj(proj="geocent", datum="WGS84", ellps="WGS84")
+
+        # WGS84 좌표를 ECEF 좌표로 변환
+        x, y, z = pyproj.transform(wgs84, ecef, longitude, latitude, 0, radians=False)
+
+        return x, y, z
+
+    @classmethod
     def czml_prettier(
+        cls,
         czml_path,
         draw_label=False,
         draw_path=False,
@@ -131,7 +146,10 @@ class CzmlMaker:
         indented_czml.write(json.dumps(czml, indent=2))
         indented_czml.close()
 
-    def add_ball(czml, target_satellite_id, start_time, end_time, length, rgba):
+    @classmethod
+    def make_ball_packet(
+        cls, target_satellite_id, start_time, end_time, dimensions, rgba
+    ):
         target_ball_packet = {
             "id": f"ball#{target_satellite_id}",
             "name": f"Orbital ball#{target_satellite_id}",
@@ -142,7 +160,7 @@ class CzmlMaker:
             },
             "ellipsoid": {
                 "radii": {
-                    "cartesian": [length, length, length],
+                    "cartesian": dimensions,
                 },
                 "fill": True,
                 "material": {
@@ -154,8 +172,8 @@ class CzmlMaker:
                 },
             },
         }
-        czml.append(target_ball_packet)
-        return czml
+
+        return target_ball_packet
 
     def add_cone(
         czml, target_satellite_id, start_time, end_time, delay, length, fov_deg, rgba
@@ -218,12 +236,18 @@ class CzmlMaker:
         czml.append(target_cone_packet)
         return czml
 
-    def add_fixed_site(czml, site_id, start_time, end_time, x, y, z):
-        print(site_id)
+    @classmethod
+    def make_fixed_site_packet(
+        cls, site_id, start_time, end_time, xyz=[], latitude=None, longitude=None
+    ):
+        if xyz == []:
+            x, y, z = cls.__convert_lat_lon_to_ecef(latitude, longitude)
+        else:
+            x, y, z = xyz
         site_packet = {
-            "id": f"{site_id}",
+            "id": f"site_{site_id}",
             "name": "Site",
-            "availability": f"{start_time.isoformat()}/{end_time.isoformat()}",
+            "availability": f"{start_time}/{end_time}",
             "description": "Site",
             "label": {
                 "fillColor": {
@@ -246,7 +270,7 @@ class CzmlMaker:
             },
             "position": {
                 "referenceFrame": "FIXED",
-                "epoch": f"{start_time.isoformat()}",
+                "epoch": f"{start_time}",
                 "cartesian": [x, y, z],
             },
             "point": {
@@ -262,28 +286,33 @@ class CzmlMaker:
             },
         }
 
-        czml.append(site_packet)
-        return czml
+        return site_packet
 
-    def add_fixed_cone(
-        czml,
+    @classmethod
+    def make_fixed_cone_packet(
+        cls,
         cone_id,
         start_time,
         end_time,
-        x,
-        y,
-        z,
         cone_range,
         cone_field_of_view,
+        xyz=[],
+        latitude=None,
+        longitude=None,
         rgba=[240, 240, 24, 90],
     ):
+        if xyz == []:
+            x, y, z = cls.__convert_lat_lon_to_ecef(latitude, longitude)
+        else:
+            x, y, z = xyz
+
         magnitude = math.sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))
         meter_cone_range = cone_range * 1000
 
         cone_packet = {
             "id": f"cone_{cone_id}",
             "name": "Site Cone",
-            "availability": f"{start_time.isoformat()}/{end_time.isoformat()}",
+            "availability": f"{start_time}/{end_time}",
             "description": "Site Cone",
             "position": {
                 "referenceFrame": "FIXED",
@@ -307,8 +336,8 @@ class CzmlMaker:
                 },
             },
         }
-        czml.append(cone_packet)
-        return czml
+
+        return cone_packet
 
     def add_pair(czml, pair_dict):
         for pair_key, interval_values in pair_dict.items():
@@ -365,6 +394,120 @@ class CzmlMaker:
             czml.append(pair_packet)
 
         return czml
+
+    @classmethod
+    def set_current_time(cls, czml, current_time):
+        for i, packet in enumerate(czml):
+            if "clock" in packet:
+                packet["clock"]["currentTime"] = current_time
+        return czml
+
+    @classmethod
+    def make_conjunction_packet(cls, conjunction):
+        primary_id = conjunction.primary_id
+        secondary_id = conjunction.secondary_id
+
+        rgba_before = [255, 0, 0, 255]
+        rgba_intersected = [255, 0, 0, 255]
+        rgba_after = [0, 0, 255, 255]
+
+        entering_time, tca, leaving_time = (
+            conjunction.entering_time,
+            conjunction.tca,
+            conjunction.leaving_time,
+        )
+        # remove last word
+        # entering_time = entering_time[:-1]
+        # tca = tca[:-1]
+        # leaving_time = leaving_time[:-1]
+        color_set = []
+        color_set.append(
+            {
+                "interval": f"{entering_time}/{tca}",
+                "rgba": rgba_before,
+            },
+        )
+        color_set.append(
+            {
+                "interval": f"{tca}/{leaving_time}",
+                "rgba": rgba_after,
+            },
+        )
+        pair_packet = {
+            "id": f"{primary_id}/{secondary_id}",
+            "name": f"{primary_id} to {secondary_id}",
+            "availability": f"{entering_time}/{leaving_time}",
+            "polyline": {
+                "show": True,
+                "width": 3,
+                "material": {
+                    "polylineOutline": {
+                        "color": color_set,
+                        "outlineColor": {
+                            "rgba": [255, 255, 255, 255],
+                        },
+                        "outlineWidth": 1,
+                    },
+                },
+                "arcType": "NONE",
+                "positions": {
+                    "references": [
+                        f"{primary_id}#position",
+                        f"{secondary_id}#position",
+                    ],
+                },
+            },
+        }
+
+        return pair_packet
+
+    @classmethod
+    def make_pair_packet(
+        cls,
+        primary_id,
+        secondary_id,
+        start_time,
+        end_time,
+        creation_number=None,
+        rgba=[0, 255, 0, 255],
+    ):
+        rgba_before = [255, 0, 0, 255]
+        rgba_intersected = [255, 0, 0, 255]
+        rgba_after = [0, 0, 255, 255]
+
+        if creation_number == None:
+            packet_id = f"{primary_id}/{secondary_id}"
+        else:
+            packet_id = f"{primary_id}/{secondary_id}_{creation_number}"
+        pair_packet = {
+            "id": packet_id,
+            "name": f"{primary_id} to {secondary_id}",
+            "availability": f"{start_time}/{end_time}",
+            "polyline": {
+                "show": True,
+                "width": 3,
+                "material": {
+                    "polylineOutline": {
+                        "color": {
+                            "rgba": rgba,
+                        },
+                        "outlineColor": {
+                            "rgba": [255, 255, 255, 255],
+                        },
+                        "outlineWidth": 1,
+                    },
+                },
+                "arcType": "NONE",
+                "positions": {
+                    "references": [
+                        f"{primary_id}#position",
+                        f"{secondary_id}#position",
+                    ],
+                },
+            },
+        }
+
+        return pair_packet
 
     def rgba_reverse(rgba):
         opposite_rgba = []
