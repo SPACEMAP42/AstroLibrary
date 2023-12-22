@@ -2,7 +2,7 @@ class LinkOptimizationDB:
     def __init__(self, object):
         self.__lo_current_time = object["loCurrentTime"]
         self.__path = object["path"]
-        self.__number_of_hoppings = object["numberOfHoppings"]
+        self.__path_length = object["numberOfHoppings"]
 
     @property
     def lo_current_time(self):
@@ -13,13 +13,13 @@ class LinkOptimizationDB:
         return self.__path
 
     @property
-    def number_of_hoppings(self):
-        return self.__number_of_hoppings
+    def path_length(self):
+        return self.__path_length
 
     def __repr__(self) -> str:
         data = {
             "lo_current_time": self.__lo_current_time,
             "path": self.__path,
-            "number_of_hoppings": self.__number_of_hoppings,
+            "path_length": self.__path_length,
         }
         return str(data)
