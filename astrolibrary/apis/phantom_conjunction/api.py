@@ -35,9 +35,13 @@ class PhantomConjunctionAPI:
         endpoint = f"/launch-conjunction/{placed_id}"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
+        number_of_attempts = 0
         while response.json()["statusCode"] == 400:
+            number_of_attempts += 1
             time.sleep(5)
             response = self.__session.get(url)
+            if number_of_attempts >= 10:
+                return None
         # return response.json()["data"]
         return self.__response_to_phantom_conjunction_object(response.json()["data"])
 
