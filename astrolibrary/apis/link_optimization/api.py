@@ -55,6 +55,7 @@ class LinkOptimizationAPI:
         endpoint = f"/link-optimization/{placed_id}"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
+        number_of_attempts = 0
         while response.json()["statusCode"] == 400:
             number_of_attempts += 1
             time.sleep(5)
