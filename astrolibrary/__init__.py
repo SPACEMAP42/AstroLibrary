@@ -14,6 +14,9 @@ from .apis.link_optimization.api import LinkOptimizationAPI
 from .data.link_optimization_db import LinkOptimizationDB
 from .apis.window.api import WindowAPI
 
+from .apis.collision_avoidance.api import CollisionAvoidanceAPI
+from .data.collision_avoidance_db import CollisionAvoidanceDB
+
 __all__ = [
     "Client",
     "ConjunctionAPI",
@@ -28,4 +31,6 @@ __all__ = [
     "LinkOptimizationDB",
     "LinkOptimizationAPI",
     "WindowAPI",
+    "CollisionAvoidanceAPI",
+    "CollisionAvoidanceDB",
 ]

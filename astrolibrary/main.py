@@ -6,6 +6,7 @@ from .apis.watcher_catcher.api import WatcherCatcherAPI
 from .apis.phantom_conjunction.api import PhantomConjunctionAPI
 from .apis.link_optimization.api import LinkOptimizationAPI
 from .apis.window.api import WindowAPI
+from .apis.collision_avoidance.api import CollisionAvoidanceAPI
 
 
 class Client:
@@ -33,3 +34,6 @@ class Client:
             self.__base_url, self.__session
         )
         self.window_API = WindowAPI(self.__base_url, self.__session)
+        self.collision_avoidance_API = CollisionAvoidanceAPI(
+            self.__base_url, self.__session
+        )

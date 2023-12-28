@@ -8,6 +8,9 @@ from .watching_time_interval import WatchingTimeInterval
 from .phantom_conjunction import PhantomConjunction
 from .link_optimization import LinkOptimization
 from .link_optimization_db import LinkOptimizationDB
+from .collision_avoidance import CollisionAvoidance
+from .collision_avoidance_db import CollisionAvoidanceDB
+
 
 __all__ = [
     "Conjunction",
@@ -19,4 +22,6 @@ __all__ = [
     "PhantomConjunction",
     "LinkOptimization",
     "LinkOptimizationDB",
+    "CollisionAvoidance",
+    "CollisionAvoidanceDB",
 ]
