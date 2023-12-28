@@ -48,7 +48,7 @@ class CollisionAvoidanceAPI:
         endpoint = "/collision-avoidance"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
-        return response.json()
+        return response.json()["data"]
 
     def find_collision_avoidance_result_by_id(self, id) -> CollisionAvoidance:
         endpoint = f"/collision-avoidance/{id}"

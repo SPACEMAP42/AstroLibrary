@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print(response)
 
     # 2. read link optimization (get all link optimization prediction list)
-    request_list = spacemap.collision_avoidance_API.read_collision_avoidance_status_list()["data"]
+    request_list = spacemap.collision_avoidance_API.read_collision_avoidance_status_list()
     print(request_list)
 
     # 3. find link optimization (get very last link optimization result)
@@ -39,22 +39,22 @@ if __name__ == "__main__":
     collision_avoidance_result = spacemap.collision_avoidance_API.find_collision_avoidance_result_by_id(id)
     print(collision_avoidance_result)
 
-    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-    path = os.path.abspath(os.path.dirname(__file__))
-    with open(f"{path}/collision_avoidance_result_{now}.txt", "w") as file:
-        file.write(collision_avoidance_result.__repr__())
+    # now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    # path = os.path.abspath(os.path.dirname(__file__))
+    # with open(f"{path}/collision_avoidance_result_{now}.txt", "w") as file:
+    #     file.write(collision_avoidance_result.__repr__())
 
-    # 4. delete link optimization (delete link optimization object in database)
-    response = spacemap.collision_avoidance_API.delete_collision_avoidance_result_by_id(id)
-    print(response)
+    # # 4. delete link optimization (delete link optimization object in database)
+    # response = spacemap.collision_avoidance_API.delete_collision_avoidance_result_by_id(id)
+    # print(response)
 
-    # implement 1 ~ 3 All at once (except task 4)
-    spacemap.collision_avoidance_API.predict_collision_avoidance_and_get_result(    
-        primary_id_of_conjunction,
-        secondary_id_of_conjunction,
-        amount_of_level,
-        number_of_paths,
-        threshold,
-        cola_epoch_time,
-        cola_end_time
-    )
+    # # implement 1 ~ 3 All at once (except task 4)
+    # spacemap.collision_avoidance_API.predict_collision_avoidance_and_get_result(    
+    #     primary_id_of_conjunction,
+    #     secondary_id_of_conjunction,
+    #     amount_of_level,
+    #     number_of_paths,
+    #     threshold,
+    #     cola_epoch_time,
+    #     cola_end_time
+    # )
