@@ -2,7 +2,7 @@ import os
 import astrolibrary
 from datetime import datetime, timezone
 
-example_access_token = "FLKHTmD7kQvowF+FYvIYtegO834kVdzgbAQxA2+YIe1ngSLkDNY6kWQnAog2z6s8"
+example_access_token = ""
 
 if __name__ == "__main__":
     spacemap = astrolibrary.Client(example_access_token)
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     # exmaple data
     primary_id_of_conjunction = 58463
     secondary_id_of_conjunction = 56358
-    amount_of_level = 200
+    offset_amount = 200
     number_of_paths = 5
     threshold = 50
     cola_epoch_time = None
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     response = spacemap.collision_avoidance_API.predict_collision_avoidance(
         primary_id_of_conjunction,
         secondary_id_of_conjunction,
-        amount_of_level,
+        offset_amount,
         number_of_paths,
         threshold,
         cola_epoch_time,
@@ -39,22 +39,23 @@ if __name__ == "__main__":
     collision_avoidance_result = spacemap.collision_avoidance_API.find_collision_avoidance_result_by_id(id)
     print(collision_avoidance_result)
 
-    # now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-    # path = os.path.abspath(os.path.dirname(__file__))
-    # with open(f"{path}/collision_avoidance_result_{now}.txt", "w") as file:
-    #     file.write(collision_avoidance_result.__repr__())
+    now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    path = os.path.abspath(os.path.dirname(__file__))
+    with open(f"{path}/collision_avoidance_result_{now}.txt", "w") as file:
+        file.write(collision_avoidance_result.__repr__())
 
-    # # 4. delete link optimization (delete link optimization object in database)
-    # response = spacemap.collision_avoidance_API.delete_collision_avoidance_result_by_id(id)
-    # print(response)
+    # 4. delete link optimization (delete link optimization object in database)
+    response = spacemap.collision_avoidance_API.delete_collision_avoidance_result_by_id(id)
+    print(response)
 
-    # # implement 1 ~ 3 All at once (except task 4)
-    # spacemap.collision_avoidance_API.predict_collision_avoidance_and_get_result(    
-    #     primary_id_of_conjunction,
-    #     secondary_id_of_conjunction,
-    #     amount_of_level,
-    #     number_of_paths,
-    #     threshold,
-    #     cola_epoch_time,
-    #     cola_end_time
-    # )
+    # implement 1 ~ 3 All at once (except task 4)
+    collision_avoidance_result = spacemap.collision_avoidance_API.predict_collision_avoidance_and_get_result(    
+        primary_id_of_conjunction,
+        secondary_id_of_conjunction,
+        offset_amount,
+        number_of_paths,
+        threshold,
+        cola_epoch_time,
+        cola_end_time
+    )
+    print(collision_avoidance_result)

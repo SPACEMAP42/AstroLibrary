@@ -17,7 +17,7 @@ class CollisionAvoidanceAPI:
         self,
         primary_id_of_conjunction: int,
         secondary_id_of_conjunction: int,
-        amount_of_level: int,
+        offset_amount: int,
         number_of_paths: int,
         threshold: float,
         cola_epoch_time: str = None,
@@ -35,7 +35,7 @@ class CollisionAvoidanceAPI:
         payload = {
             "pIdOfConjunction": primary_id_of_conjunction,
             "sIdOfConjunction": secondary_id_of_conjunction,
-            "amountOfLevel": amount_of_level,
+            "offsetAmount": offset_amount,
             "numberOfPaths": number_of_paths,
             "threshold": threshold,
             "colaEpochTime": cola_epoch_time,
@@ -81,7 +81,7 @@ class CollisionAvoidanceAPI:
         self,
         primary_id_of_conjunction: int,
         secondary_id_of_conjunction: int,
-        amount_of_level: int,
+        offset_amount: int,
         number_of_paths: int,
         threshold: float,
         cola_epoch_time: str,
@@ -90,11 +90,11 @@ class CollisionAvoidanceAPI:
         self.predict_collision_avoidance(
             primary_id_of_conjunction,
             secondary_id_of_conjunction,
-            amount_of_level,
+            offset_amount,
             number_of_paths,
             threshold,
             cola_epoch_time,
             cola_end_time,
         )
-        id = self.read_collision_avoidance_status_list()["data"][-1]["_id"]
+        id = self.read_collision_avoidance_status_list()[-1]["_id"]
         return self.find_collision_avoidance_result_by_id(id)
