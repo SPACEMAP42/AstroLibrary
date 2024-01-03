@@ -29,7 +29,6 @@ class TLEAPI:
         endpoint = f"/tles/{year}/{month}/{day}/{hour}"
         url = self.__base_url + endpoint
         params = {"id": norad_id}
-        print(url)
         response = self.__session.get(url, params=params)
         return self.__tle_dict_to_tle_objects(response.json()["data"]["tles"])
 
