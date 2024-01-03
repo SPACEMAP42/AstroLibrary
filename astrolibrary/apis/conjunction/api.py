@@ -34,7 +34,26 @@ class ConjunctionAPI:
         }
         response = self.__session.get(url, params=params)
         return self.__dict_to_conjunction_object(response.json()["data"])
-    
+
+    def search_conjunctions_for_cola(
+        self,
+        limit: int = 10,
+        page: int = 0,
+        sort: sort_type = sort_type.tcaTime,
+        norad_id: str = None,
+    ):
+        endpoint = "/ppdb/conjunctions"
+        url = self.__base_url + endpoint
+        params = {
+            "limit": limit,
+            "page": page,
+            "sort": self.sort_type(sort).name,
+            "option": "cola",
+            "satellite": norad_id,
+        }
+        response = self.__session.get(url, params=params)
+        return self.__dict_to_conjunction_object(response.json()["data"])
+
     def search_conjunctions_for_constellation(
         self,
         limit: int = None,

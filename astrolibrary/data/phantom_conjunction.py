@@ -4,7 +4,7 @@ import json
 class PhantomConjunction:
     def __init__(self, response):
         self.__trajectory_path = response["trajectoryPath"]
-        self.__downloaded_time_of_used_TLE = response["predictionEpochTime"]
+        self.__download_time_of_TLE = response["predictionEpochTime"]
         self.__trajectory_length = response["trajectoryLength"]
         self.__phantom_epoch_time = response["launchEpochTime"]
         self.__threshold = response["threshold"]
@@ -15,8 +15,8 @@ class PhantomConjunction:
         return self.__trajectory_path
 
     @property
-    def downloaded_time_of_used_TLE(self):
-        return self.__downloaded_time_of_used_TLE
+    def download_time_of_TLE(self):
+        return self.__download_time_of_TLE
 
     @property
     def trajectory_length(self):
@@ -37,7 +37,7 @@ class PhantomConjunction:
     def __repr__(self) -> str:
         data = {
             "trajectoryPath": self.__trajectory_path,
-            "predictionEpochTime": self.__downloaded_time_of_used_TLE,
+            "predictionEpochTime": self.__download_time_of_TLE,
             "trajectoryLength": self.__trajectory_length,
             "phantomEpochTime": self.__phantom_epoch_time,
             "threshold": self.__threshold,

@@ -79,7 +79,6 @@ class CzmlMaker:
                     json_datum["id"] = json_datum["id"] + "_LINEAR"
                 for data in json_datum["position"]["cartesian"]:
                     if math.isnan(data):
-                        # print(json_data[json_datum])
                         if json_datum in json_data:
                             will_removed_data.append(json_datum)
                             # json_data.remove(json_datum)
@@ -509,6 +508,94 @@ class CzmlMaker:
 
         return pair_packet
 
+    @classmethod
+    def __get_trajectory_from_url(cls, trajectory_url):
+        import requests
+
+        r = requests.get(trajectory_url, allow_redirects=True)
+        trajectory = r.content.decode("utf-8").split("\n")
+        return trajectory
+
+    @classmethod
+    def __parsing_trajectory(cls, trajectory):
+        cartesian = []
+        for current_line in trajectory:
+            current_line = current_line.split(" ")
+            if len(current_line) != 4:
+                continue
+            cartesian.append(float(current_line[0]))
+            cartesian.append(float(current_line[1]))
+            cartesian.append(float(current_line[2]))
+            cartesian.append(float(current_line[3]))
+
+        return cartesian
+
+    @classmethod
+    def make_trajectory_packet_from_trajectory_url_for_cola(
+        cls,
+        trajectory_id,
+        trajectory_name,
+        trajectory_url,
+        download_time_of_TLE,
+        start_time_of_cola,
+        end_time_of_cola,
+        rgba=[0, 255, 0, 255],
+    ):
+        trajectory = cls.__get_trajectory_from_url(trajectory_url)
+        cartesian = cls.__parsing_trajectory(trajectory)
+
+        trajectory_packet = {
+            "id": f"{trajectory_id}",
+            "name": f"{trajectory_id}",
+            "availability": f"{start_time_of_cola}/{end_time_of_cola}",
+            "description": f"trajectory {trajectory_id}",
+            "point": {
+                "color": {"rgba": [255, 255, 255, 255]},
+                "outlineColor": {"rgba": rgba},
+                "outlineWidth": 3,
+                "pixelSize": 3,
+            },
+            "label": {
+                "fillColor": {
+                    "rgba": [255, 255, 255, 255],
+                },
+                "font": "12pt Arial",
+                "horizontalOrigin": "LEFT",
+                "outlineColor": {
+                    "rgba": [24, 24, 24, 255],
+                },
+                "outlineWidth": 2,
+                "pixelOffset": {
+                    "cartesian2": [10, 10],
+                },
+                "show": True,
+                "style": "FILL_AND_OUTLINE",
+                "text": f"{trajectory_name}",
+                "verticalOrigin": "CENTER",
+            },
+            "path": {
+                "material": {
+                    "polylineOutline": {
+                        "color": {"rgba": [255, 255, 255, 255]},
+                        "outlineColor": {"rgba": rgba},
+                        "outlineWidth": 2,
+                    }
+                },
+                "width": 4,
+                "leadTime": 6000,
+                "trailTime": 6000,
+            },
+            "position": {
+                "epoch": f"{download_time_of_TLE}",
+                "cartesian": cartesian,
+                "interpolationAlgorithm": "LAGRANGE",
+                "interpolationDegree": 5,
+                "referenceFrame": "INERTIAL",
+            },
+        }
+
+        return trajectory_packet
+
     def rgba_reverse(rgba):
         opposite_rgba = []
         if len(rgba) == 3:
@@ -657,8 +744,6 @@ class CzmlMaker:
                 result[key[1]].append(key[0])
             else:
                 result[key[1]] = [key[0]]
-
-        print(result.keys())
         return result.keys()
 
     def read_ppdb(ppdb_path):

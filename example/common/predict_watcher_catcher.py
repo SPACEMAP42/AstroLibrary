@@ -50,7 +50,7 @@ if __name__ == "__main__":
         "cone_field_of_view": 40,
         "start_time_of_timeline": "2023-04-17T08:58:58.170Z",
         "end_time_of_timeline": "2023-04-17T09:58:58.170Z",
-        "downloaded_time_of_used_TLE": "2023-04-16T09:00:00.000Z",
+        "download_time_of_TLE": "2023-04-16T09:00:00.000Z",
         "watching_time_interval": [
             {
                 "primary_id": 0,

@@ -20,15 +20,13 @@ class CollisionAvoidanceAPI:
         offset_amount: int,
         number_of_paths: int,
         threshold: float,
-        cola_epoch_time: str = None,
-        cola_end_time: str = None,
+        start_time_of_cola: str = None,
+        end_time_of_cola: str = None,
     ):
-        if cola_epoch_time == None:
-            cola_epoch_time = self.__get_current_time()
-        if cola_end_time == None:
-            cola_end_time = self.__get_current_time() + datetime.timedelta(
-                hours=1
-            )
+        if start_time_of_cola == None:
+            start_time_of_cola = self.__get_current_time()
+        if end_time_of_cola == None:
+            end_time_of_cola = self.__get_current_time() + datetime.timedelta(hours=1)
 
         endpoint = "/collision-avoidance"
         url = self.__base_url + endpoint
@@ -38,8 +36,8 @@ class CollisionAvoidanceAPI:
             "offsetAmount": offset_amount,
             "numberOfPaths": number_of_paths,
             "threshold": threshold,
-            "colaEpochTime": cola_epoch_time,
-            "colaEndTime": cola_end_time,
+            "colaEpochTime": start_time_of_cola,
+            "colaEndTime": end_time_of_cola,
         }
         response = self.__session.post(url, data=payload)
         return response.json()
@@ -84,8 +82,8 @@ class CollisionAvoidanceAPI:
         offset_amount: int,
         number_of_paths: int,
         threshold: float,
-        cola_epoch_time: str,
-        cola_end_time: str,
+        start_time_of_cola: str,
+        end_time_of_cola: str,
     ):
         self.predict_collision_avoidance(
             primary_id_of_conjunction,
@@ -93,8 +91,8 @@ class CollisionAvoidanceAPI:
             offset_amount,
             number_of_paths,
             threshold,
-            cola_epoch_time,
-            cola_end_time,
+            start_time_of_cola,
+            end_time_of_cola,
         )
         id = self.read_collision_avoidance_status_list()[-1]["_id"]
         return self.find_collision_avoidance_result_by_id(id)
