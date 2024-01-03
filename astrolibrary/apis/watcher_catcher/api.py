@@ -46,7 +46,7 @@ class WatcherCatcherAPI:
         endpoint = "/watcher-catcher"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
-        return response.json()
+        return response.json()["data"]
 
     def find_watcher_catcher_result_by_id(self, id) -> WatcherCatcher:
         endpoint = f"/watcher-catcher/{id}"

@@ -29,7 +29,7 @@ class PhantomConjunctionAPI:
         endpoint = "/launch-conjunction"
         url = self.__base_url + endpoint
         response = self.__session.get(url)
-        return response.json()
+        return response.json()["data"]
 
     def find_phantom_conjunction_result_by_id(self, placed_id) -> PhantomConjunction:
         endpoint = f"/launch-conjunction/{placed_id}"
