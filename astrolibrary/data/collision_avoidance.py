@@ -1,5 +1,6 @@
 import json
 
+
 class CollisionAvoidance:
     def __init__(self, response):
         self.__id = response["_id"]
@@ -9,9 +10,9 @@ class CollisionAvoidance:
         self.__offset_amount = response["offsetAmount"]
         self.__number_of_paths = response["numberOfPaths"]
         self.__candidate_paths = response["candidatePaths"]
-        self.__prediction_epoch_time = response["predictionEpochTime"]
-        self.__cola_epoch_time = response["colaEpochTime"]
-        self.__cola_end_time = response["colaEndTime"]
+        self.__download_time_of_TLE = response["predictionEpochTime"]
+        self.__start_time_of_cola = response["colaEpochTime"]
+        self.__end_time_of_cola = response["colaEndTime"]
         self.__collision_avoidance_db = response["coladb"]
 
     @property
@@ -43,16 +44,16 @@ class CollisionAvoidance:
         return self.__candidate_paths
 
     @property
-    def prediction_epoch_time(self):
-        return self.__prediction_epoch_time
+    def download_time_of_TLE(self):
+        return self.__download_time_of_TLE
 
     @property
-    def cola_epoch_time(self):
-        return self.__cola_epoch_time
+    def start_time_of_cola(self):
+        return self.__start_time_of_cola
 
     @property
-    def cola_end_time(self):
-        return self.__cola_end_time
+    def end_time_of_cola(self):
+        return self.__end_time_of_cola
 
     @property
     def collision_avoidance_db(self):
@@ -67,9 +68,9 @@ class CollisionAvoidance:
             "offset_amount": self.__offset_amount,
             "number_of_paths": self.__number_of_paths,
             "candidate_paths": self.__candidate_paths,
-            "prediction_epoch_time": self.__prediction_epoch_time,
-            "cola_epoch_time": self.__cola_epoch_time,
-            "cola_end_time": self.__cola_end_time,
+            "download_time_of_TLE": self.__download_time_of_TLE,
+            "start_time_of_cola": self.__start_time_of_cola,
+            "end_time_of_cola": self.__end_time_of_cola,
             "collision_avoidance_db": [
                 {
                     "primary_id": coladb.primary_id,
@@ -77,10 +78,11 @@ class CollisionAvoidance:
                     "secondary_id": coladb.secondary_id,
                     "secondary_name": coladb.secondary_name,
                     "distance_of_closest_approach": coladb.distance_of_closest_approach,
-                    "start_time_of_closest_approach": coladb.start_time_of_closest_approach,
+                    "entering_time": coladb.entering_time,
                     "time_of_closest_approach": coladb.time_of_closest_approach,
-                    "end_time_of_closest_approach": coladb.end_time_of_closest_approach
-                } for coladb in self.__collision_avoidance_db
-            ]
+                    "leaving_time": coladb.leaving_time,
+                }
+                for coladb in self.__collision_avoidance_db
+            ],
         }
         return json.dumps(data, indent=4)

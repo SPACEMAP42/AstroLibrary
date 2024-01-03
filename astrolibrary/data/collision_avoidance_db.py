@@ -1,4 +1,6 @@
+
 import json
+
 
 class CollisionAvoidanceDB:
     def __init__(self, object):
@@ -6,8 +8,8 @@ class CollisionAvoidanceDB:
         self.__primary_name = object["pName"]
         self.__secondary_id = object["sId"]
         self.__secondary_name = object["sName"]
-        self.__distance_of_closest_apporoach = object["dca"]
-        self.__start_time_of_closest_approach = object["tcaStartTime"]
+        self.__dca = object["dca"]
+        self.__entering_time = object["tcaStartTime"]
         self.__time_of_closest_approach = object["tcaTime"]
         self.__end_time_of_closest_appoach = object["tcaEndTime"]
 
@@ -29,18 +31,18 @@ class CollisionAvoidanceDB:
 
     @property
     def distance_of_closest_approach(self):
-        return self.__distance_of_closest_apporoach
+        return self.__dca
 
     @property
-    def start_time_of_closest_approach(self):
-        return self.__start_time_of_closest_approach
+    def entering_time(self):
+        return self.__entering_time
 
     @property
     def time_of_closest_approach(self):
         return self.__time_of_closest_approach
 
     @property
-    def end_time_of_closest_approach(self):
+    def leaving_time(self):
         return self.__end_time_of_closest_appoach
 
     def __repr__(self):
@@ -49,9 +51,9 @@ class CollisionAvoidanceDB:
             "primary_name": self.__primary_name,
             "secondary_id": self.__secondary_id,
             "secondary_name": self.__secondary_name,
-            "distance_of_closest_approach": self.__distance_of_closest_apporoach,
-            "start_time_of_closest_approach": self.__start_time_of_closest_approach,
+            "distance_of_closest_approach": self.__dca,
+            "entering_time": self.__entering_time,
             "time_of_closest_approach": self.__time_of_closest_approach,
-            "end_time_of_closest_approach": self.__end_time_of_closest_appoach
+            "leaving_time": self.__end_time_of_closest_appoach,
         }
         return json.dumps(data, indent=4)
