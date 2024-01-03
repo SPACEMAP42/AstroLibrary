@@ -99,5 +99,5 @@ class WatcherCatcherAPI:
             start_time_of_timeline,
             end_time_of_timeline,
         )
-        id = self.read_watcher_catcher_status_list()["data"][-1]["_id"]
+        id = self.read_watcher_catcher_status_list()[-1]["_id"]
         return self.find_watcher_catcher_result_by_id(id)
