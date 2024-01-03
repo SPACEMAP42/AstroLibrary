@@ -10,7 +10,7 @@ class LinkOptimization:
         self.__destination_longitude = response["destinationLongitude"]
         self.__start_time_of_timeline = response["loEpochTime"]
         self.__end_time_of_timeline = response["loEndTime"]
-        self.__downloaded_time_of_used_TLE = response["predictionEpochTime"]
+        self.__download_time_of_TLE = response["predictionEpochTime"]
         self.__link_optimization_db = response["lodb"]
 
     @property
@@ -42,8 +42,8 @@ class LinkOptimization:
         return self.__end_time_of_timeline
 
     @property
-    def downloaded_time_of_used_TLE(self):
-        return self.__downloaded_time_of_used_TLE
+    def download_time_of_TLE(self):
+        return self.__download_time_of_TLE
 
     @property
     def link_optimization_db(self):
@@ -58,7 +58,7 @@ class LinkOptimization:
             "destination_longitude": self.__destination_longitude,
             "start_time_of_timeline": self.__start_time_of_timeline,
             "end_time_of_timeline": self.__end_time_of_timeline,
-            "downloaded_time_of_used_TLE,": self.__downloaded_time_of_used_TLE,
+            "download_time_of_TLE,": self.__download_time_of_TLE,
             "link_optimization_db": [
                 lodb.__repr__() for lodb in self.__link_optimization_db
             ],
