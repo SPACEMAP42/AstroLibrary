@@ -18,9 +18,9 @@ if __name__ == "__main__":
     }
     """
 
-    # read prediction window
-    prediction_window = spacemap.window_API.read_prediction_window()
-    print(prediction_window)
+    # # read prediction window
+    # prediction_window = spacemap.window_API.read_prediction_window()
+    # print(prediction_window)
 
     # read link optimization window
     link_optimization_window = (
@@ -29,16 +29,21 @@ if __name__ == "__main__":
     print(link_optimization_window)
 
     # 1. predict link optimization with default parameter
-    response = spacemap.link_optimization_API.predict_link_optimization()
+    lo_epoch_time = datetime.strptime("2024-01-03 00:00:00",'%Y-%m-%d %H:%M:%S')
+    lo_end_time = datetime.strptime("2024-01-03 00:05:00", '%Y-%m-%d %H:%M:%S')
+    response = spacemap.link_optimization_API.predict_link_optimization(
+        lo_epoch_time=lo_epoch_time,
+        lo_end_time=lo_end_time
+    )
     print(response)
 
     # 2. read link optimization (get all link optimization prediction list)
-    request_list = spacemap.link_optimization_API.read_link_optimization()["data"]
+    request_list = spacemap.link_optimization_API.read_link_optimization_status_list()["data"]
     print(request_list)
 
     # 3. find link optimization (get very last link optimization result)
     id = request_list[-1]["_id"]
-    link_optimization_result = spacemap.link_optimization_API.find_link_optimization(id)
+    link_optimization_result = spacemap.link_optimization_API.find_link_optimization_result_by_id(id)
     print(link_optimization_result)
 
     now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
@@ -47,7 +52,7 @@ if __name__ == "__main__":
         file.write(link_optimization_result.__repr__())
 
     # 4. delete link optimization (delete link optimization object in database)
-    response = spacemap.link_optimization_API.delete_predicted_result(id)
+    response = spacemap.link_optimization_API.delete_link_optimization_result_by_id(id)
     print(response)
 
     # implement 1 ~ 3 All at once (except task 4)
