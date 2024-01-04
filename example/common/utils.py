@@ -85,7 +85,7 @@ def make_czml_of_conjunction(client, conjunction):
 
 
 def make_czml_of_collision_avoidance_result(
-    client, satellite_name, tca, collision_avoidance_result
+    client, satellite_name, tca, collision_avoidance_result, draw_tertiary=False
 ):
     start_time_of_cola = convert_datetime(collision_avoidance_result.start_time_of_cola)
     end_time_of_cola = convert_datetime(collision_avoidance_result.end_time_of_cola)
@@ -95,8 +95,11 @@ def make_czml_of_collision_avoidance_result(
 
     secondary_ids = []
 
-    for curr_conjunction in collision_avoidance_result.collision_avoidance_db:
-        secondary_ids.append(curr_conjunction.secondary_id)
+    if draw_tertiary:
+        for curr_conjunction in collision_avoidance_result.collision_avoidance_db:
+            secondary_ids.append(curr_conjunction.secondary_id)
+    else:
+        secondary_ids.append(collision_avoidance_result.secondary_id_of_conjunction)
 
     tles_of_satellites = []
 
@@ -162,6 +165,9 @@ def make_czml_of_collision_avoidance_result(
         )
         czml.append(curr_trajectory_packet)
 
+    secondary_id_of_original_conjunction = (
+        collision_avoidance_result.secondary_id_of_conjunction
+    )
     for curr_conjunction in collision_avoidance_result.collision_avoidance_db:
         primary_id_of_conjunction = curr_conjunction.primary_id
         secondary_id_of_conjunction = curr_conjunction.secondary_id
