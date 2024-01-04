@@ -193,13 +193,10 @@ def make_czml_of_watcher_catcher_result(client, watcher_catcher_result):
     tles_of_satellites = []
 
     for curr_norad_id in norad_ids_of_satellites:
-        try:
-            curr_tle = client.tle_API.get_tle_by_norad_id_and_date(
-                curr_norad_id, download_time_of_TLE
-            )
-            tles_of_satellites.append(curr_tle[0])
-        except:
-            print(f"Error: {curr_norad_id}")
+        curr_tle = client.tle_API.get_tle_by_norad_id_and_date(
+            curr_norad_id, download_time_of_TLE
+        )
+        tles_of_satellites.append(curr_tle[0])
 
     start_time_of_timeline = convert_datetime(
         watcher_catcher_result.start_time_of_timeline
