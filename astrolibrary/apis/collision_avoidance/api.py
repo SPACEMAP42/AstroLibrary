@@ -55,7 +55,7 @@ class CollisionAvoidanceAPI:
         number_of_attempts = 0
         while response.json()["statusCode"] == 400:
             number_of_attempts += 1
-            time.sleep(10)
+            time.sleep(30)
             print("Waiting for the result." + "attempt: " + str(number_of_attempts) + "\n")
             response = self.__session.get(url)
             # if number_of_attempts >= 20:
