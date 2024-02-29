@@ -14,5 +14,5 @@ astrolibrary.*
 *.czml
 *.tle
 py311/
-py311-astrolibrary/
+/py311-astrolibrary
 ```
